@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using HeadHunter.Enums;
+
+namespace HeadHunter.Models
+{
+    public class Resume
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Name { get; set; }
+        public double Salary { get; set; }
+        public string Email { get; set; }
+        public string Telegram {get; set;}
+        public string Phone { get; set; }
+        public string Facebook { get; set; }
+        public string LinkedIn { get; set; }
+        public Status Status { get; set; }
+        public DateTime DateOfPublication { get; set; }
+
+        public string UserId { get; set; }
+        public virtual User User { get; set; }
+
+        public string CategoryId { get; set; }
+        public virtual Category Category { get; set; }
+
+        public virtual List<JobExpirience> JobExpiriences { get; set; }
+
+        public virtual List<Qualification> Qualifications { get; set; }
+    }
+}

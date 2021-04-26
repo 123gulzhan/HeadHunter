@@ -1,0 +1,21 @@
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace HeadHunter.Models
+{
+    public class HeadHunterContext : IdentityDbContext<User>
+    {
+        public DbSet<User> Users { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Resume> Resumes { get; set; }
+        public DbSet<Vacancy> Vacancies { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Respond> Responds { get; set; }
+        public DbSet<JobExpirience> JobExpiriences { get; set; }
+        public DbSet<Qualification> Qualifications { get; set; }
+
+        public HeadHunterContext(DbContextOptions options) : base(options)
+        {
+        }
+    }
+}
