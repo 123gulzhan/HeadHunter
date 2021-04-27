@@ -37,6 +37,9 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("ApplicantId")
+                        .HasColumnType("text");
+
                     b.Property<string>("CompanyName")
                         .HasColumnType("text");
 
@@ -53,6 +56,8 @@ namespace HeadHunter.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
 
                     b.HasIndex("ResumeId");
 
@@ -64,6 +69,9 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("ApplicantId")
+                        .HasColumnType("text");
+
                     b.Property<string>("CompanyName")
                         .HasColumnType("text");
 
@@ -80,6 +88,8 @@ namespace HeadHunter.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
 
                     b.HasIndex("ResumeId");
 
@@ -393,20 +403,28 @@ namespace HeadHunter.Migrations
 
             modelBuilder.Entity("HeadHunter.Models.JobExperience", b =>
                 {
-                    b.HasOne("HeadHunter.Models.Resume", "Resume")
+                    b.HasOne("HeadHunter.Models.User", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId");
+
+                    b.HasOne("HeadHunter.Models.Resume", null)
                         .WithMany("JobExperiences")
                         .HasForeignKey("ResumeId");
 
-                    b.Navigation("Resume");
+                    b.Navigation("Applicant");
                 });
 
             modelBuilder.Entity("HeadHunter.Models.Qualification", b =>
                 {
-                    b.HasOne("HeadHunter.Models.Resume", "Resume")
+                    b.HasOne("HeadHunter.Models.User", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId");
+
+                    b.HasOne("HeadHunter.Models.Resume", null)
                         .WithMany("Qualifications")
                         .HasForeignKey("ResumeId");
 
-                    b.Navigation("Resume");
+                    b.Navigation("Applicant");
                 });
 
             modelBuilder.Entity("HeadHunter.Models.Respond", b =>

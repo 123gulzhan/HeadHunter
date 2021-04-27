@@ -10,7 +10,7 @@ namespace HeadHunter.Models
         public DateTime DateOfBegining { get; set; }
         public DateTime DateOfEnd { get; set; }
 
-        public string ResumeId { get; set; }
-        public virtual Resume Resume { get; set; }
+        public string ApplicantId { get; set; }
+        public virtual User Applicant { get; set; }
     }
 }
