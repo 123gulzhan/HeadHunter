@@ -23,7 +23,7 @@ namespace HeadHunter.Models
         public string CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
-        public virtual List<JobExpirience> JobExpiriences { get; set; }
+        public virtual List<JobExperience> JobExperiences { get; set; }
 
         public virtual List<Qualification> Qualifications { get; set; }
     }

@@ -10,7 +10,7 @@ namespace HeadHunter.Models
         public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Respond> Responds { get; set; }
-        public DbSet<JobExpirience> JobExpiriences { get; set; }
+        public DbSet<JobExperience> JobExperiences { get; set; }
         public DbSet<Qualification> Qualifications { get; set; }
 
         public HeadHunterContext(DbContextOptions options) : base(options)

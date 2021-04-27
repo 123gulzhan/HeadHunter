@@ -32,29 +32,7 @@ namespace HeadHunter.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("HeadHunter.Models.Company", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AvatarPath")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("HeadHunter.Models.JobExpirience", b =>
+            modelBuilder.Entity("HeadHunter.Models.JobExperience", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -78,7 +56,7 @@ namespace HeadHunter.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("JobExpiriences");
+                    b.ToTable("JobExperiences");
                 });
 
             modelBuilder.Entity("HeadHunter.Models.Qualification", b =>
@@ -136,10 +114,13 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("ApplicantId")
+                        .HasColumnType("text");
+
                     b.Property<string>("CategoryId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateOfPublication")
+                    b.Property<DateTime?>("DateOfPublication")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
@@ -157,8 +138,8 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("text");
 
-                    b.Property<double>("Salary")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -166,14 +147,11 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Telegram")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ApplicantId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Resumes");
                 });
@@ -253,23 +231,23 @@ namespace HeadHunter.Migrations
                     b.Property<string>("CategoryId")
                         .HasColumnType("text");
 
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateOfPublication")
+                    b.Property<DateTime?>("DateOfPublication")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("Expirience")
-                        .HasColumnType("integer");
+                    b.Property<string>("EmployerId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Experience")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<double>("Salary")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -278,7 +256,7 @@ namespace HeadHunter.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("EmployerId");
 
                     b.ToTable("Vacancies");
                 });
@@ -413,10 +391,10 @@ namespace HeadHunter.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("HeadHunter.Models.JobExpirience", b =>
+            modelBuilder.Entity("HeadHunter.Models.JobExperience", b =>
                 {
                     b.HasOne("HeadHunter.Models.Resume", "Resume")
-                        .WithMany("JobExpiriences")
+                        .WithMany("JobExperiences")
                         .HasForeignKey("ResumeId");
 
                     b.Navigation("Resume");
@@ -448,32 +426,32 @@ namespace HeadHunter.Migrations
 
             modelBuilder.Entity("HeadHunter.Models.Resume", b =>
                 {
+                    b.HasOne("HeadHunter.Models.User", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId");
+
                     b.HasOne("HeadHunter.Models.Category", "Category")
-                        .WithMany("Resumes")
+                        .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("HeadHunter.Models.User", "User")
-                        .WithMany("Resumes")
-                        .HasForeignKey("UserId");
+                    b.Navigation("Applicant");
 
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HeadHunter.Models.Vacancy", b =>
                 {
                     b.HasOne("HeadHunter.Models.Category", "Category")
-                        .WithMany("Vacancies")
+                        .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("HeadHunter.Models.Company", "Company")
-                        .WithMany("Vacancies")
-                        .HasForeignKey("CompanyId");
+                    b.HasOne("HeadHunter.Models.User", "Employer")
+                        .WithMany()
+                        .HasForeignKey("EmployerId");
 
                     b.Navigation("Category");
 
-                    b.Navigation("Company");
+                    b.Navigation("Employer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -527,28 +505,11 @@ namespace HeadHunter.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HeadHunter.Models.Category", b =>
-                {
-                    b.Navigation("Resumes");
-
-                    b.Navigation("Vacancies");
-                });
-
-            modelBuilder.Entity("HeadHunter.Models.Company", b =>
-                {
-                    b.Navigation("Vacancies");
-                });
-
             modelBuilder.Entity("HeadHunter.Models.Resume", b =>
                 {
-                    b.Navigation("JobExpiriences");
+                    b.Navigation("JobExperiences");
 
                     b.Navigation("Qualifications");
-                });
-
-            modelBuilder.Entity("HeadHunter.Models.User", b =>
-                {
-                    b.Navigation("Resumes");
                 });
 #pragma warning restore 612, 618
         }

@@ -61,21 +61,6 @@ namespace HeadHunter.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Companies",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    Phone = table.Column<string>(type: "text", nullable: true),
-                    AvatarPath = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -187,23 +172,23 @@ namespace HeadHunter.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Salary = table.Column<double>(type: "double precision", nullable: false),
+                    Salary = table.Column<decimal>(type: "numeric", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
                     Telegram = table.Column<string>(type: "text", nullable: true),
                     Phone = table.Column<string>(type: "text", nullable: true),
                     Facebook = table.Column<string>(type: "text", nullable: true),
                     LinkedIn = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    DateOfPublication = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: true),
+                    DateOfPublication = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ApplicantId = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Resumes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Resumes_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Resumes_AspNetUsers_ApplicantId",
+                        column: x => x.ApplicantId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -221,33 +206,33 @@ namespace HeadHunter.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Salary = table.Column<double>(type: "double precision", nullable: false),
+                    Salary = table.Column<decimal>(type: "numeric", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Expirience = table.Column<int>(type: "integer", nullable: false),
+                    Experience = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    DateOfPublication = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CompanyId = table.Column<string>(type: "text", nullable: true),
+                    DateOfPublication = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EmployerId = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vacancies", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Vacancies_AspNetUsers_EmployerId",
+                        column: x => x.EmployerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Vacancies_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Vacancies_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobExpiriences",
+                name: "JobExperiences",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -259,9 +244,9 @@ namespace HeadHunter.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobExpiriences", x => x.Id);
+                    table.PrimaryKey("PK_JobExperiences", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_JobExpiriences_Resumes_ResumeId",
+                        name: "FK_JobExperiences_Resumes_ResumeId",
                         column: x => x.ResumeId,
                         principalTable: "Resumes",
                         principalColumn: "Id",
@@ -354,8 +339,8 @@ namespace HeadHunter.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobExpiriences_ResumeId",
-                table: "JobExpiriences",
+                name: "IX_JobExperiences_ResumeId",
+                table: "JobExperiences",
                 column: "ResumeId");
 
             migrationBuilder.CreateIndex(
@@ -374,14 +359,14 @@ namespace HeadHunter.Migrations
                 column: "VacancyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Resumes_ApplicantId",
+                table: "Resumes",
+                column: "ApplicantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Resumes_CategoryId",
                 table: "Resumes",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Resumes_UserId",
-                table: "Resumes",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vacancies_CategoryId",
@@ -389,9 +374,9 @@ namespace HeadHunter.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vacancies_CompanyId",
+                name: "IX_Vacancies_EmployerId",
                 table: "Vacancies",
-                column: "CompanyId");
+                column: "EmployerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -412,7 +397,7 @@ namespace HeadHunter.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "JobExpiriences");
+                name: "JobExperiences");
 
             migrationBuilder.DropTable(
                 name: "Qualifications");
@@ -434,9 +419,6 @@ namespace HeadHunter.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Companies");
         }
     }
 }

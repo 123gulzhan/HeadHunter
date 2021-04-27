@@ -9,7 +9,7 @@ namespace HeadHunter.Models
         public string Name { get; set; }
         public decimal Salary { get; set; }
         public string Description { get; set; }
-        public string Expirience { get; set; }
+        public string Experience { get; set; }
         public Status Status { get; set; }
         public DateTime? DateOfPublication { get; set; }
 

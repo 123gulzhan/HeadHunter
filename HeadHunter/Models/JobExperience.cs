@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HeadHunter.Models
 {
-    public class JobExpirience
+    public class JobExperience
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
