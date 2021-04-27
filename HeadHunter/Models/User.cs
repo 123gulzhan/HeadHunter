@@ -9,8 +9,6 @@ namespace HeadHunter.Models
     {
         public string AvatarPath { get; set; }
 
-        public virtual List<Resume> Resumes { get; set; }
-        
         [NotMapped]
         public IFormFile File { get; set; }
     }

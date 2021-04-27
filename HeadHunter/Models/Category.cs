@@ -7,8 +7,5 @@ namespace HeadHunter.Models
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
-
-        public virtual List<Resume> Resumes { get; set; }
-        public virtual List<Vacancy> Vacancies { get; set; }
     }
 }

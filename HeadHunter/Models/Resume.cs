@@ -8,17 +8,17 @@ namespace HeadHunter.Models
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
-        public double Salary { get; set; }
+        public decimal Salary { get; set; }
         public string Email { get; set; }
         public string Telegram {get; set;}
         public string Phone { get; set; }
         public string Facebook { get; set; }
         public string LinkedIn { get; set; }
         public Status Status { get; set; }
-        public DateTime DateOfPublication { get; set; }
+        public DateTime? DateOfPublication { get; set; }
 
-        public string UserId { get; set; }
-        public virtual User User { get; set; }
+        public string ApplicantId { get; set; }
+        public virtual User Applicant { get; set; }
 
         public string CategoryId { get; set; }
         public virtual Category Category { get; set; }
