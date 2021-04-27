@@ -16,5 +16,8 @@ namespace HeadHunter.Models
         public HeadHunterContext(DbContextOptions options) : base(options)
         {
         }
+        
+       
+        
     }
 }
