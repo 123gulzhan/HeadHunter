@@ -47,19 +47,16 @@ namespace HeadHunter.Controllers
         {
             if (ModelState.IsValid)
             {
+                string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\Images\\Avatars");
+                string avatarPath = $"\\Images\\Avatars\\defaultavatar.jpg";
                 if (model.File != null)
                 {
-                    string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\Images\\Avatars");
-                    string avatarPath = $"\\Images\\Avatars\\defaultavatar.jpg";
-                    if (model.File != null)
-                    {
-                        avatarPath = $"Images\\Avatars\\{model.File.FileName}";
-                        _uploadService.Upload(path, model.File.FileName, model.File);
-                    }
-                    model.AvatarPath = avatarPath;
+                    avatarPath = $"Images\\Avatars\\{model.File.FileName}";
+                    _uploadService.Upload(path, model.File.FileName, model.File);
                 }
+                model.AvatarPath = avatarPath;
 
-                User user = new User
+                    User user = new User
                 {
                     UserName = model.UserName,
                     Email = model.Email,
