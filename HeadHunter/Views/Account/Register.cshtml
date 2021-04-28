@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model HeadHunter.ViewModels.RegisterViewModel
+
+
+@{
+    ViewBag.Title = "Регистрация";
+    Layout = "_Layout";
+}
+
+<h2>Регистрация пользователя</h2>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="Register" asp-controller="Account" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label>Выберите роль для регистрации</label>
+                <select asp-for="Role" id="role-selection">
+                    <option value="applicant">Соискатель</option>
+                    <option value="employer">Работодатель</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label id="username-label">Имя пользователя</label>
+                <input class="form-control" asp-for="UserName">
+                <small id="emailHelp" class="form-text text-muted">Ваши данные остаются в безопасности</small>
+                <span asp-validation-for="UserName"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input class="form-control" asp-for="Email">
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone"></label>
+                <input class="form-control" asp-for="Phone">
+                <span asp-validation-for="Phone"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="File"></label>
+                <input class="form-control-file" asp-for="File">
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input class="form-control" asp-for="Password">
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input class="form-control" asp-for="ConfirmPassword">
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-outline-primary" value="Регистрация">
+            </div>
+        </form>
+    </div>
+</div>

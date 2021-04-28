@@ -6,6 +6,8 @@ namespace HeadHunter.ViewModels
 {
     public class RegisterViewModel
     {
+        public string Role { get; set; }
+        
         [Required(ErrorMessage = "Это поле обязательно")]
         public string UserName { get; set; }
         

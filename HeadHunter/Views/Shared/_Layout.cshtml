@@ -4,6 +4,8 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - HeadHunter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
 </head>
@@ -24,6 +26,25 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="form-inline ml-auto">
+                            <form asp-action="Logout" asp-controller="Account" method="post">
+                                <a asp-action="Index" asp-controller="Account">
+                                    <i class="fas fa-user-tie" style="font-size: 30px; color: #0366d6" aria-hidden="true"></i>
+                                </a>
+                                <input type="submit" class="btn" value="Выход">
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-inline ml-auto">
+                            <a asp-action="Login" asp-controller="Account" class="btn ml-2">Вход</a>
+                            <a asp-action="Register" asp-controller="Account" class="btn">Регистрация</a>
+                        </div>
+                    }
+                    
                 </ul>
             </div>
         </div>
