@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HeadHunter.Models;
 using HeadHunter.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -13,13 +14,18 @@ namespace HeadHunter.Controllers
     {
         private HeadHunterContext _db;
         private UserManager<User> _userManager;
-        
+
+        public UsersController(HeadHunterContext db, UserManager<User> userManager)
+        {
+            _db = db;
+            _userManager = userManager;
+        }
         
         [HttpGet]
-        [Authorize(Roles = "applicant")]
-        public IActionResult Index(string userId)
+        //[Authorize(Roles = "applicant")]
+        public async Task<IActionResult> IndexAsync(string userId)
         {
-            User user = _db.Users.FirstOrDefault(u => u.Id == userId);
+            User user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return NotFound();
 
