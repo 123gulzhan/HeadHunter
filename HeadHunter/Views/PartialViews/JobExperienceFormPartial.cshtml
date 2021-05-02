@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Identity
+@model JobExperience
+@inject UserManager<User> UserManager
+
+<form asp-controller="Users" asp-action="AddJobExperience" method="post">
+    <input type="hidden" asp-for="ApplicantId" value="@UserManager.GetUserId(User)">
+    <div class="my-3">
+        <label asp-for="DateOfBegin">Дата начала работы:
+            <span asp-validation-for="DateOfBegin"></span><br>
+            @Html.TextBoxFor(j => j.DateOfBegin, new {@class = "form-control", placeholder = "dd.mm.yyyy"})
+            @* <input asp-for="DateOfBegining" type="date"> *@
+        </label>
+    </div>
+    <div class="my-3">
+        <label asp-for="DateOfEnd">Дата окончания работы:
+            <span asp-validation-for="DateOfEnd"></span><br>
+            <input asp-for="DateOfEnd" type="date"></label>
+    </div>
+    <div class="my-3">
+        <label asp-for=CompanyName>Компания:
+            <span asp-validation-for="CompanyName"></span><br>
+            <input asp-for="CompanyName" placeholder="Название компании"></label>
+    </div>
+    <div class="my-3">
+        <label asp-for=Name><span asp-validation-for="Name"></span><br>
+            <input asp-for="Name" placeholder="Должность">
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
+</form>

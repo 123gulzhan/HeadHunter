@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunter.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20210427165621_Initial")]
+    [Migration("20210502140919_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,16 +43,20 @@ namespace HeadHunter.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CompanyName")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
-                    b.Property<DateTime>("DateOfBegining")
+                    b.Property<DateTime>("DateOfBegin")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DateOfEnd")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
 
                     b.Property<string>("ResumeId")
                         .HasColumnType("text");

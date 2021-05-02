@@ -29,19 +29,20 @@ namespace HeadHunter.Controllers
             if (user == null)
                 return NotFound();
 
-            List<Respond> responds = _db.Responds.Include(respond => respond.Resume)
-                .ThenInclude(r => r.Applicant)
-                .Join(_db.Resumes.Where(resume => resume.ApplicantId == userId),
-                    respond => respond.ResumeId,
-                    resume => resume.ApplicantId,
-                    (respond, resume) => new Respond
-                    {
-                        Id = respond.Id,
-                        DateOfRespond = respond.DateOfRespond,
-                        ResumeId = resume.Id,
-                        VacancyId = respond.VacancyId
-                    })
-                .OrderByDescending(r => r.DateOfRespond)
+            List<Respond> responds = _db.Responds
+                // .Include(respond => respond.Resume)
+                // .ThenInclude(r => r.Applicant)
+                // .Join(_db.Resumes.Where(resume => resume.ApplicantId == userId),
+                //     respond => respond.ResumeId,
+                //     resume => resume.ApplicantId,
+                //     (respond, resume) => new Respond
+                //     {
+                //         Id = respond.Id,
+                //         DateOfRespond = respond.DateOfRespond,
+                //         ResumeId = resume.Id,
+                //         VacancyId = respond.VacancyId
+                //     })
+                // .OrderByDescending(r => r.DateOfRespond)
                 .ToList();
             
             ApplicantViewModel model = new ApplicantViewModel
@@ -53,6 +54,19 @@ namespace HeadHunter.Controllers
                 Responds = responds
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult AddJobExperience(JobExperience experience)
+        {
+            if (experience.ApplicantId == null) return NotFound();
+            if (ModelState.IsValid)
+            {
+                _db.JobExperiences.Add(experience);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return NotFound();
         }
     }
 }

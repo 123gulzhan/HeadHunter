@@ -6,12 +6,13 @@
 }
 
 <div class="container">
+    <div class="text-right"><a asp-action="Edit" asp-controller="Account" asp-route-id=@Model.User.Id><button class="btn btn-secondary">Редактировать профиль</button></a></div>
     <div class="user-header text-center">
         <img src="@Model.User.AvatarPath" class="applicant-avatar col-md-2" alt="фото соискателя">
         <h4 class="text-secondary my-2">Сотрудник</h4>
         <h5 class="text-secondary my-3">@Model.User.UserName</h5>
     </div>
-    
+
     @if (Model.JobExperiences.Count == 0)
     {
         <div class="note">
@@ -20,20 +21,122 @@
     }
     <div class="main-info mt-3 ml-3">
         <h5>Основная информация</h5>
-        <p>@Model.User.UserName</p>
-        <p>@Model.User.Email</p>
-        <p>@Model.User.PhoneNumber</p>
+        <p><small class="text-secondary font-italic mr-2">Name: </small>@Model.User.UserName</p>
+        <p><small class="text-secondary font-italic mr-2">Email: </small>@Model.User.Email</p>
+        <p><small class="text-secondary font-italic mr-2">Phone: </small>@Model.User.PhoneNumber</p>
     </div>
-    
+    <hr>
     <div class="job-experience-block">
-            
+        <div class="row justify-content-between mx-3">
+            <h5>Опыт работы</h5>
+            <button type="button" id="addJobExp" class="btn btn-secondary my-1" data-toggle="modal" data-target="#staticBackdrop">
+                Добавить опыт работы
+            </button>
         </div>
+        <div class="modal fade" id="staticBackdrop" name="modalJob" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Опыт работы</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @{
+                            await Html.RenderPartialAsync("../PartialViews/JobExperienceFormPartial", new JobExperience());
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="experience-list">
+            @if (Model.JobExperiences.Count != 0)
+            {
+                <ul>
+                    @foreach (var job in Model.JobExperiences)
+                    {
+                        <li class="my-2 pt-2">
+                            <table>
+                                <tr><td class="text-secondary font-italic"><small>Комания - </small></td><td class="pl-2">@job.CompanyName</td></tr>
+                                <tr><td class="text-secondary font-italic"><small>Должность - </small></td><td class="pl-2">@job.Name</td></tr>
+                                <tr><td class="text-secondary font-italic"><small>Период работы - </small></td><td class="pl-2">@job.DateOfBegin.ToShortDateString() - @job.DateOfEnd.ToShortDateString()</td></tr>
+                            </table>
+                        </li>
+                    }
+                </ul>    
+            }
+        </div>
+    </div>
+    <hr>
     <div class="qualifications-block">
-        
+        <div class="row justify-content-between mx-3">
+            <h5>Повышение квалификации</h5>  
+            <button type="button" id="addQual" class="btn btn-secondary my-1" data-toggle="modal" data-target="#staticBackdrop">
+                Добавить информацию о повышении квалификации
+            </button>
+        </div>
+        <div class="modal fade" id="staticBackdrop" name="modalQual" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Опыт работы</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                @* @{ *@
+                                @*     await Html.RenderPartialAsync("../PartialViews/QualificationFormPartial", new Qualification()); *@
+                                @* } *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <div class="experience-list">
+            @if (Model.Qualifications.Count != 0)
+            {
+                <ul>
+                    @foreach (var qual in Model.Qualifications)
+                    {
+                        <li class="my-2 pt-2">
+                            <table>
+                                <tr><td class="text-secondary font-italic"><small>Комания - </small></td><td class="pl-2">@qual.CompanyName</td></tr>
+                                <tr><td class="text-secondary font-italic"><small>Квалификация - </small></td><td class="pl-2">@qual.Name</td></tr>
+                                <tr><td class="text-secondary font-italic"><small>Период прохождения - </small></td><td class="pl-2">@qual.DateOfBegining.ToShortDateString() - @qual.DateOfEnd.ToShortDateString()</td></tr>
+                            </table>
+                        </li>
+                    }
+                </ul>    
+            }
+        </div>
     </div>
 
     <div class="resume-block">
-            
+
     </div>
-    
+
 </div>
+@section Scripts
+{
+    <script>
+    $(document).ready(function (){
+        var modalJob = document.getElementsByName('modalJob');
+        var modalQual = document.getElementsByName('modalQual');
+        modalJob.hide();
+        modalQual.hide();
+        
+        $('#addJobExp').click(function (event){
+            event.preventDefault();
+            modalJob.show();
+        })     
+        
+        $('#addQual').click(function (event){
+            event.preventDefault();
+            modalQual.show();
+        })   
+    });
+    
+
+    </script>
+}

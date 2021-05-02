@@ -76,7 +76,7 @@ namespace HeadHunter.Controllers
                     }
 
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Users");
                 }
 
                 foreach (var error in result.Errors)

@@ -41,16 +41,20 @@ namespace HeadHunter.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CompanyName")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
-                    b.Property<DateTime>("DateOfBegining")
+                    b.Property<DateTime>("DateOfBegin")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DateOfEnd")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
 
                     b.Property<string>("ResumeId")
                         .HasColumnType("text");
