@@ -54,5 +54,27 @@ namespace HeadHunter.Controllers
             };
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EmployerProfile(string userId)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            List<Respond> responds = _db.Responds.Include(r => r.Vacancy).ThenInclude(r=>r.Employer)
+                .Include(r => r.Resume).ToList();
+
+            EmployerViewModel model = new EmployerViewModel
+            {
+                User = user,
+                Vacancies = _db.Vacancies.Where(v => v.EmployerId == userId).ToList(),
+                Responds = responds
+            };
+
+            return View(model);
+        }
     }
 }
