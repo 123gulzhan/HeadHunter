@@ -6,6 +6,7 @@ using HeadHunter.Models;
 using HeadHunter.Services;
 using HeadHunter.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -76,6 +77,7 @@ namespace HeadHunter.Controllers
                     }
 
                     await _signInManager.SignInAsync(user, false);
+                    
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -171,6 +173,38 @@ namespace HeadHunter.Controllers
                 }
             }
             return View(model);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> EditAjax(string userId, string userName, string phone, IFormFile avatar)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                if (userName != null)
+                {
+                    user.UserName = userName;
+                }
+                if (phone != null)
+                {
+                    user.PhoneNumber = phone;
+                }
+                if (avatar != null)
+                {
+                    string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\Images\\Avatars");
+                    string avatarPath = $"Images\\Avatars\\{avatar.FileName}";
+                    _uploadService.Upload(path, avatar.FileName, avatar);
+
+                    user.AvatarPath = avatarPath;
+                }
+
+                var result = _userManager.UpdateAsync(user);
+                if (result.IsCompletedSuccessfully)
+                {
+                    await _db.SaveChangesAsync();
+                }
+            }
+            return Json(user);
         }
 
         [HttpGet]
