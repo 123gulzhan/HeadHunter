@@ -198,8 +198,8 @@ namespace HeadHunter.Controllers
                     user.AvatarPath = avatarPath;
                 }
 
-                var result = _userManager.UpdateAsync(user);
-                if (result.IsCompletedSuccessfully)
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
                 {
                     await _db.SaveChangesAsync();
                 }
