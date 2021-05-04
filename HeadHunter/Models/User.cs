@@ -12,4 +12,5 @@ namespace HeadHunter.Models
         [NotMapped]
         public IFormFile File { get; set; }
     }
+    
 }

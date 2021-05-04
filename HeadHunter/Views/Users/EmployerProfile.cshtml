@@ -8,15 +8,15 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="user-header text-center">
-            <img src="@Model.User.AvatarPath" class="applicant-avatar col-md-6" alt="avatar">
+            <img src="@Model.User.AvatarPath" class="applicant-avatar col-md-6" alt="avatar" id="user-avatar">
             <h4 class="text-secondary my-2">Работодатель</h4>
-            <h5 class="text-secondary my-3">@Model.User.UserName</h5>
+            <h5 class="text-secondary my-3" id="user-name">@Model.User.UserName</h5>
         </div>
         <div class="main-info mt-3 ml-3" id="mainInfo">
             <h5>Основная информация</h5>
-            <p>@Model.User.UserName</p>
+            <div id="user-name-main"><p>@Model.User.UserName</p></div>
             <p>@Model.User.Email</p>
-            <p>@Model.User.PhoneNumber</p>
+            <div id="user-phone"><p>@Model.User.PhoneNumber</p></div>
             <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#editForm">Редактировать</button>
         </div>
         <div class="vacancy-info mt-3">
@@ -107,7 +107,10 @@
                    'avatar' : avatar
                },
                success : function (data){
-                   $('#mainInfo').html(data);
+                   $('#user-name').html(data.userName);
+                   $('#user-name-main').html('<p>' + data.userName + '</p>');
+                   $('#user-phone').html('<p>' + data.phoneNumber + '</p>');
+                   $('#user-avatar').text(data.avatarPath);
                    console.log(data);
                }
             });
