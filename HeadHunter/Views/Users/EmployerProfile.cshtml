@@ -91,40 +91,34 @@
 @section Scripts
 {
     <script >
-        $('#succes').hide();
-        function EditAjax(inputId){
-            var userId = $('#userId').val()
-            var userName = $('#username').val()
-            var phone = $('#phone').val()
-            var input = document.getElementById(inputId);
-            var avatars = input.files;
-            var formData = new FormData();
-            
-            for (var i = 0; i != avatars.length; i++) {
-                formData.append("avatars", avatars[i])
-            }
-           $.ajax({
-               url : '@Url.Action("EditAjax", "Account")',
-               type : 'GET',
-               data : {
-                   'userId' : userId,
-                   'userName' : userName,
-                   'phone' : phone,
-                   'avatar' : formData
-               },
-               success : function (data){
-                   $('#user-name').html(data.userName);
-                   $('#user-name-main').html('<p>' + data.userName + '</p>');
-                   $('#user-phone').html('<p>' + data.phoneNumber + '</p>');
-                   $('#user-avatar').text(data.avatarPath);
-                   console.log(data);
-                   console.log(data.avatarPath);
-               }
-            });
-            $('#form').hide();
-            $('#succes').show();
-            
-        }
+         $('#succes').hide();
+         function EditAjax(){
+             var userId = $('#userId').val()
+             var userName = $('#username').val()
+             var phone = $('#phone').val()
+             var avatar = $('#avatar').val()
+            $.ajax({
+                url : '@Url.Action("EditAjax", "Account")',
+                type : 'GET',
+                data : {
+                    'userId' : userId,
+                    'userName' : userName,
+                    'phone' : phone,
+                    'avatar' : avatar
+                },
+                success : function (data){
+                    $('#user-name').html(data.userName);
+                    $('#user-name-main').html('<p>' + data.userName + '</p>');
+                    $('#user-phone').html('<p>' + data.phoneNumber + '</p>');
+                    $('#user-avatar').text(data.avatarPath);
+                    console.log(data);
+                    console.log(data.avatarPath);
+                }
+             });
+             $('#form').hide();
+             $('#succes').show();
+             
+         }
         
     </script>
 }
