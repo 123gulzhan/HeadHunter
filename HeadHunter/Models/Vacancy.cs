@@ -12,6 +12,7 @@ namespace HeadHunter.Models
         public string Experience { get; set; }
         public Status Status { get; set; }
         public DateTime? DateOfPublication { get; set; }
+        public DateTime? DateOfUpdate { get; set; }
 
         public string EmployerId { get; set; }
         public virtual User Employer { get; set; }

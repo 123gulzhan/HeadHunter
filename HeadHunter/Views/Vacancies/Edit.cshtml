@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model HeadHunter.ViewModels.EditVacancyViewModel
+@inject UserManager<User> UserManager
+
+@{
+    ViewBag.Title = "Редактирование вакансии";
+    Layout = "_Layout";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="Edit" asp-controller="Vacancies" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label>Категория</label>
+                @if (@Model.Categories.Count > 0)
+                {
+                    <select asp-for="CategoryId">
+                        @foreach (var category in @Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input class="form-control" asp-for="Name" placeholder="@Model.Name">
+                <span asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salary"></label>
+                <input class="form-control" asp-for="Salary" placeholder="@Model.Salary">
+                <span asp-validation-for="Salary"></span>
+            </div>
+            <div class="form-group">
+                <label>Опыт работы</label>
+                <select asp-for="Experience">
+                    <option value="1-3 года">1-3 года</option>
+                    <option value="3-5 лет">3-5 лет</option>
+                    <option value="5-7 лет">5-7 лет</option>
+                    <option value="7 и более лет">7 и более лет</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea class="form-control" cols="30" rows="10" asp-for="Description"></textarea>
+                <span asp-validation-for="Description"></span>
+            </div>
+            <div>
+                <input type="hidden" asp-for="Id" value="@Model.Id">
+            </div>
+            <div>
+                <input type="hidden" asp-for="EmployerId" value="@UserManager.GetUserId(User)">
+            </div>
+            
+            <div>
+                <input type="submit" class="btn btn-outline-primary" value="Редактировать">
+            </div>
+        </form>
+    </div>
+</div>
