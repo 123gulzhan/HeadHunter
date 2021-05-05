@@ -8,7 +8,7 @@
 }
 
 <div class="m-2 d-flex align-items-baseline">
-    <h4 class="pr-4">@Model.Name</h4>
+    <h4 class="pr-4">@Model.PositionName</h4>
     <a asp-controller="Resumes" asp-action="EditResume" asp-route-id="@Model.Id" asp-route-userid="@Model.ApplicantId" type="submit">
         <button class="btn-sm btn-outline-primary">Редактировать</button></a>
     </div>
@@ -29,12 +29,24 @@
         <tr><td>Дата публикации </td><td>@Model.DateOfPublication.Value.Date.ToShortDateString()</td></tr>
     }
     <tr><td class="pr-2">Категория </td><td class="ml-3">@Model.Category.Name</td></tr>
-    <tr><td class="pr-2">Ожидаемая зарплата </td><td class="ml-3">@Model.Salary</td></tr>
-    <tr><td class="pr-2">Конт.Email </td><td class="ml-3">@Model.Email</td></tr>
-    <tr><td class="pr-2">Конт.телефон </td><td class="ml-3">@Model.Phone</td></tr>
-    <tr><td class="pr-2">Телеграм</td><td class="ml-3">@Model.Telegram</td></tr>
-    <tr><td class="pr-2">Ссылка на Фэйсбук </td><td class="ml-3"><a href="@Model.Facebook">@Model.Facebook</a>/<td></tr>
-    <tr><td class="pr-2">Ссылка на Линкедин </td><td class="ml-3"><a href="@Model.LinkedIn">@Model.LinkedIn</a></td></tr>
+    @if (Model.Salary != 0)
+    {
+        <tr><td class="pr-2">Ожидаемая зарплата </td><td class="ml-3">@Model.Salary</td></tr>
+    }
+    <tr><td class="pr-2">Конт.Email </td><td class="ml-3">@Model.Applicant.Email</td></tr>
+    <tr><td class="pr-2">Конт.телефон </td><td class="ml-3">@Model.Applicant.PhoneNumber</td></tr>
+    @if (Model.Telegram != null)
+    {
+        <tr><td class="pr-2">Телеграм</td><td class="ml-3">@Model.Telegram</td></tr>
+    }
+    @if (Model.Facebook != null)
+    {
+        <tr><td class="pr-2">Ссылка на Фэйсбук </td><td class="ml-3"><a href="@Model.Facebook">@Model.Facebook</a>/<td></tr>
+    }
+    @if (Model.LinkedIn != null)
+    {
+        <tr><td class="pr-2">Ссылка на Линкедин </td><td class="ml-3"><a href="@Model.LinkedIn">@Model.LinkedIn</a></td></tr>
+    }
 </table>
 <hr>
 <div class="job-experience-block mt-3">
@@ -142,25 +154,3 @@
     });
 
 </script>
-
-@* @section Scripts *@
-@* { *@
-@*     <script> *@
-@*     $(document).ready(function (){ *@
-@*         var modalJob = document.getElementsByName('modalJob'); *@
-@*         var modalQual = document.getElementsByName('modalQual'); *@
-@*         modalJob.hide; *@
-@*         modalQual.hide; *@
-@* *@
-@*         $('#addJobExp').click(function (event){ *@
-@*             event.preventDefault(); *@
-@*             modalJob.show; *@
-@*         }) *@
-@* *@
-@*         $('#addQual').click(function (event){ *@
-@*             event.preventDefault(); *@
-@*             modalQual.show; *@
-@*         }) *@
-@*     }); *@
-@*     </script> *@
-@* } *@

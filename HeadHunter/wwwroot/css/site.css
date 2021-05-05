@@ -65,7 +65,12 @@ body {
 .applicant-avatar{
   border-radius: 50%;
 }
-
+.button-to-link-style{
+  border: none;
+  background-color: white;
+  font-size: 12px;
+  font-style: italic;  
+}
 .check-custom{
   font-size: 100px;
   color: #28a743;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using HeadHunter.Enums;
 
 namespace HeadHunter.Models
@@ -7,11 +8,12 @@ namespace HeadHunter.Models
     public class Resume
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; }
+        
+        [Required(ErrorMessage = "Заполните")]
+        [StringLength(40, MinimumLength = 5, ErrorMessage = "Длина от 5 до 40 знаков")]
+        public string PositionName { get; set; }
         public decimal Salary { get; set; }
-        public string Email { get; set; }
         public string Telegram {get; set;}
-        public string Phone { get; set; }
         public string Facebook { get; set; }
         public string LinkedIn { get; set; }
         public Status Status { get; set; } = Status.Неопубликованное;

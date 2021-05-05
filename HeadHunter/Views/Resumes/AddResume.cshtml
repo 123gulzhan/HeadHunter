@@ -29,44 +29,45 @@
             }
         </div>
         <div class=" mt-2">
-            <label asp-for="Name" class="control-label">Название резюме:</label>
-            <span asp-validation-for="Name"></span><br>
-            <input asp-for="Name" class="col-4">
+            <label asp-for="PositionName" class="control-label">Название резюме:</label>
+            <span asp-validation-for="PositionName"></span><br>
+            <input asp-for="PositionName" class="col-4">
         </div>
         <div class="form-group mt-2">
-            <label asp-for="Salary" class="">Ожидаемая зарплата:</label>
-            <span asp-validation-for="Salary"></span><br>
-            <input asp-for="Salary" class="col-4" placeholder="Сумма, в тенге">
+            <label asp-for="Salary" class="">Ожидаемая зарплата:</label><br>
+            <input asp-for="Salary" class="col-4"  placeholder="Сумма, в тенге">
         </div>
     
     
     <div class="form-group mt-2">
-        <label asp-for="Email" class="control-label">Email:</label>
-        <span asp-validation-for="Email"></span><br>
-        <input asp-for="Email" class="col-4" value="@UserManager.GetUserAsync(User).Result.Email">
+        <label class="control-label">Email:</label><br>
+        <input disabled class="col-4" value="@UserManager.GetUserAsync(User).Result.Email">
     </div>
     <div class="form-group mt-2">
-        <label asp-for="Telegram" class="control-label">Ваш логин в телеграм:</label>
-        <span asp-validation-for="Telegram"></span><br>
+        <label asp-for="Telegram" class="control-label">Ваш логин в телеграм:</label><br>
         <input asp-for="Telegram" class="col-4" placeholder="login">
     </div>
     <div class="form-group mt-2">
-        <label asp-for="Phone" class="control-label">Конт.телефон:</label>
-        <span asp-validation-for="Phone"></span><br>
-        <input asp-for="Phone" class="col-4" value="@UserManager.GetUserAsync(User).Result.PhoneNumber">
+        <label class="control-label">Конт.телефон:</label><br>
+        <input disabled class="col-4" value="@UserManager.GetUserAsync(User).Result.PhoneNumber">
     </div>
     
     <div class="form-group mt-2">
-        <label asp-for="Facebook" class="control-label">Ссылка на ваш профиль Фэйсбук:</label>
-        <span asp-validation-for="Facebook"></span><br>
+        <label asp-for="Facebook" class="control-label">Ссылка на ваш профиль Фэйсбук:</label><br>
         <input asp-for="Facebook" class="col-4" placeholder="Вставьте ссылку">
     </div>
     <div class="form-group mt-2">
-        <label asp-for="LinkedIn" class="control-label">Ссылка на ваш профиль Линкедин:</label>
-        <span asp-validation-for="LinkedIn"></span><br>
+        <label asp-for="LinkedIn" class="control-label">Ссылка на ваш профиль Линкедин:</label><br>
         <input asp-for="LinkedIn" class="col-4" placeholder="Вставьте ссылку">
     </div>
     <hr>
     
     <button type="submit" class="btn btn-secondary ml-3 my-3">Добавить</button>
 </form>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

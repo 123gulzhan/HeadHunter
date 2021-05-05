@@ -53,10 +53,21 @@ else
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <a asp-controller="Resumes" asp-action="Index" asp-route-resumeId="@resume.Id">
-                                <h5 class="card-subtitle mb-2 text-muted">@resume.Name</h5>
+                                <h5 class="card-subtitle mb-2 text-muted">@resume.PositionName</h5>
                             </a>
-                            <p class="card-text">Статус: @resume.Status</p>
-                            <p class="card-text"><small class="font-italic text-secondary">Дата обновления:
+                            @if (@resume.DateOfPublication == null)
+                            {
+                                <form method="post" asp-controller="Resumes" asp-action="Publish" asp-route-resumeId="@resume.Id">
+                                    <button class="card-link button-to-link-style text-primary">Опубликовать</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" asp-controller="Resumes" asp-action="UnPublish" asp-route-resumeId="@resume.Id">
+                                    <button class="card-link button-to-link-style text-primary">Снять с публикации</button>
+                                </form>
+                            }
+                            <p class="card-text mt-3"><small class="font-italic text-secondary">Дата обновления:
                             @if (@resume.DateOfUpdate != null){@resume.DateOfUpdate.Value.Date.ToShortDateString()}
                            </small></p>
                             <p class="d-flex justify-content-between">

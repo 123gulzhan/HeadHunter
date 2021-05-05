@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using HeadHunter.Enums;
 using HeadHunter.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -106,7 +107,7 @@ namespace HeadHunter.Controllers
             User user = _db.Users.FirstOrDefault(u => u.Id == userid);
             if (user == null) return NotFound();
             
-            resume.ApplicantId = userid;
+            resume.ApplicantId = userid; // дебаг юзера !!!!!!!!!!!!!!
             resume.DateOfUpdate = DateTime.Now;
             ViewBag.Categories = _db.Categories.ToList();
             return View(resume);
@@ -118,11 +119,47 @@ namespace HeadHunter.Controllers
             if (resume == null) return NotFound();
             if (ModelState.IsValid)
             {
+                resume.DateOfUpdate = DateTime.Now;
                 _db.Resumes.Update(resume);
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Resumes", new {resumeId = resume.Id});
             }
             return NotFound();
         }
+
+        [HttpPost]
+        public IActionResult Publish(string resumeId)
+        {
+            if (resumeId == null) return NotFound();
+            Resume resume = _db.Resumes.FirstOrDefault(r => r.Id == resumeId);
+            if (resume != null)
+            {
+                resume.DateOfPublication = DateTime.Now;
+                resume.Status = Status.Публичное;
+                _db.Resumes.Update(resume);
+                _db.SaveChanges();
+                return RedirectToAction("ApplicantProfile", "Users", new {userId = resume.ApplicantId});
+            }
+            return NotFound();
+        }
+        
+        
+        [HttpPost]
+        public IActionResult UnPublish(string resumeId)
+        {
+            if (resumeId == null) return NotFound();
+            Resume resume = _db.Resumes.FirstOrDefault(r => r.Id == resumeId);
+            if (resume != null)
+            {
+                resume.DateOfPublication = null;
+                resume.Status = Status.Неопубликованное;
+                _db.Resumes.Update(resume);
+                _db.SaveChanges();
+                return RedirectToAction("ApplicantProfile", "Users", new {userId = resume.ApplicantId});
+            }
+            return NotFound();
+        }
+        
+        
     }
 }

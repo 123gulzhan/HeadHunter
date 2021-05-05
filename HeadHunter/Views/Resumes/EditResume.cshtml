@@ -39,9 +39,9 @@ else
             }
         </div>
         <div class=" mt-2">
-            <label asp-for="Name" class="control-label">Название:</label>
-            <span asp-validation-for="Name"></span><br>
-            <input asp-for="Name" class="col-4" value="@Model.Name">
+            <label asp-for="PositionName" class="control-label">Название:</label>
+            <span asp-validation-for="PositionName"></span><br>
+            <input asp-for="PositionName" class="col-4" value="@Model.PositionName">
         </div>
         <div class="form-group mt-2">
             <label asp-for="Salary" class="">Ожидаемая зарплата:</label>
@@ -50,9 +50,8 @@ else
         </div>
     
         <div class="form-group mt-2">
-            <label asp-for="Email" class="control-label">Email:</label>
-            <span asp-validation-for="Email"></span><br>
-            <input asp-for="Email" class="col-4" value="@UserManager.FindByIdAsync(@Model.ApplicantId).Result.Email">
+            <label class="control-label">Email:</label>
+            <input disabled class="col-4" value="@UserManager.FindByIdAsync(@Model.ApplicantId).Result.Email">
         </div>
         <div class="form-group mt-2">
             <label asp-for="Telegram" class="control-label">Ваш логин в телеграм:</label>
@@ -60,9 +59,8 @@ else
             <input asp-for="Telegram" class="col-4" value="@Model.Telegram">
         </div>
         <div class="form-group mt-2">
-            <label asp-for="Phone" class="control-label">Конт.телефон:</label>
-            <span asp-validation-for="Phone"></span><br>
-            <input asp-for="Phone" class="col-4" value="@UserManager.FindByIdAsync(@Model.ApplicantId).Result.PhoneNumber">
+            <label class="control-label">Конт.телефон:</label>
+            <input disabled class="col-4" value="@UserManager.FindByIdAsync(@Model.ApplicantId).Result.PhoneNumber">
         </div>
     
         <div class="form-group mt-2">
@@ -78,4 +76,12 @@ else
         
         <button type="submit" class="btn-sm btn-outline-primary ml-3 my-2">Редактировать</button>
     </form>
+}
+
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
