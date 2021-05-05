@@ -14,7 +14,7 @@ namespace HeadHunter.Models
         public string Phone { get; set; }
         public string Facebook { get; set; }
         public string LinkedIn { get; set; }
-        public Status Status { get; set; } = Status.Приватное;
+        public Status Status { get; set; } = Status.Неопубликованное;
         public DateTime? DateOfPublication { get; set; }
         public DateTime? DateOfUpdate { get; set; }
 

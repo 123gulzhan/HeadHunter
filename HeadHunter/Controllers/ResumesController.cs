@@ -107,6 +107,7 @@ namespace HeadHunter.Controllers
             if (user == null) return NotFound();
             
             resume.ApplicantId = userid;
+            resume.DateOfUpdate = DateTime.Now;
             ViewBag.Categories = _db.Categories.ToList();
             return View(resume);
         }

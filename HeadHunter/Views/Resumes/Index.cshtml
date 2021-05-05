@@ -7,27 +7,40 @@
     Layout = "_Layout";
 }
 
+<div class="m-2 d-flex align-items-baseline">
+    <h4 class="pr-4">@Model.Name</h4>
+    <a asp-controller="Resumes" asp-action="EditResume" asp-route-id="@Model.Id" asp-route-userid="@Model.ApplicantId" type="submit">
+        <button class="btn-sm btn-outline-primary">Редактировать</button></a>
+    </div>
 <table>
     <tr><td>Статус резюме </td><td>@Model.Status</td></tr>
+    <tr><td>Дата обновления </td>
+        @if (Model.DateOfUpdate != null)
+        {
+            <td>@Model.DateOfUpdate.Value.Date.ToShortDateString()</td>
+        }
+        else
+        {
+            <td>Не обновлялось</td>
+        }
+    </tr>
     @if (Model.Status == Status.Публичное)
     {
         <tr><td>Дата публикации </td><td>@Model.DateOfPublication.Value.Date.ToShortDateString()</td></tr>
     }
-    <tr><td>Название </td><td class="ml-3">@Model.Name</td></tr>
-    <tr><td>Категория </td><td class="ml-3">@Model.Category.Name</td></tr>
-    <tr><td>Ожидаемая зарплата </td><td class="ml-3">@Model.Salary</td></tr>
-    <tr><td>Конт.Email </td><td class="ml-3">@Model.Email</td></tr>
-    <tr><td>Конт.телефон </td><td class="ml-3">@Model.Phone</td></tr>
-    <tr><td>Телеграм</td><td class="ml-3">@Model.Telegram</td></tr>
-    <tr><td>Ссылка на Фэйсбук </td><td class="ml-3"><a href="@Model.Facebook">@Model.Facebook</a>/<td></tr>
-    <tr><td>Ссылка на Линкедин </td><td class="ml-3"><a href="@Model.LinkedIn">@Model.LinkedIn</a></td></tr>
-    <tr><td></td><td></td></tr>
+    <tr><td class="pr-2">Категория </td><td class="ml-3">@Model.Category.Name</td></tr>
+    <tr><td class="pr-2">Ожидаемая зарплата </td><td class="ml-3">@Model.Salary</td></tr>
+    <tr><td class="pr-2">Конт.Email </td><td class="ml-3">@Model.Email</td></tr>
+    <tr><td class="pr-2">Конт.телефон </td><td class="ml-3">@Model.Phone</td></tr>
+    <tr><td class="pr-2">Телеграм</td><td class="ml-3">@Model.Telegram</td></tr>
+    <tr><td class="pr-2">Ссылка на Фэйсбук </td><td class="ml-3"><a href="@Model.Facebook">@Model.Facebook</a>/<td></tr>
+    <tr><td class="pr-2">Ссылка на Линкедин </td><td class="ml-3"><a href="@Model.LinkedIn">@Model.LinkedIn</a></td></tr>
 </table>
-
-<div class="job-experience-block mt-5">
+<hr>
+<div class="job-experience-block mt-3">
         <div class="row justify-content-between mx-3">
             <h5>Опыт работы</h5>
-            <button type="button" id="addJobExp" class="btn btn-secondary my-1" data-toggle="modal" data-target="#staticBackdrop">
+            <button type="button" id="addJobExp" class="btn-sm btn-outline-primary my-1" data-toggle="modal" data-target="#staticBackdrop">
                 Добавить опыт работы
             </button>
         </div>
@@ -67,10 +80,10 @@
         </div>
     </div>
     <hr>
-<div class="qualifications-block mt-5">
+<div class="qualifications-block mt-3">
     <div class="row justify-content-between mx-3">
         <h5>Повышение квалификации</h5>
-        <button type="button" id="addQual" class="btn btn-secondary my-1" data-toggle="modal" data-target="#staticBackdropQual">
+        <button type="button" id="addQual" class="btn-sm btn-outline-primary my-1" data-toggle="modal" data-target="#staticBackdropQual">
             Добавить информацию о повышении квалификации
         </button>
     </div>

@@ -8,8 +8,6 @@
     Layout = "_Layout";
 }
 
-<h4>@ViewBag.Title</h4>
-
 @if (Model.ApplicantId != @UserManager.GetUserId(User))
 {
     <p>Доступ закрыт</p>
@@ -78,6 +76,6 @@ else
             <input asp-for="LinkedIn" class="col-4" value="@Model.LinkedIn">
         </div>
         
-        <button type="submit" class="btn btn-secondary ml-3 my-2">Редактировать</button>
+        <button type="submit" class="btn-sm btn-outline-primary ml-3 my-2">Редактировать</button>
     </form>
 }
