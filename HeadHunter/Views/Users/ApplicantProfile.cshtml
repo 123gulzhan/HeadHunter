@@ -1,0 +1,146 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model HeadHunter.ViewModels.ApplicantViewModel
+@inject UserManager<User> UserManager
+
+@{
+    ViewBag.Title = "Личный кабинет";
+    Layout = "_Layout";
+}
+
+@if (@Model.User.Id != UserManager.GetUserId(User))
+{
+    <p>Доступ закрыт</p>
+}
+else
+{
+    <div class="container">
+        <div class="user-header text-center">
+            <img src="@Model.User.AvatarPath" class="applicant-avatar col-md-2" alt="фото соискателя">
+            <h4 class="text-secondary my-2">Сотрудник</h4>
+            <h5 class="text-secondary my-3" id="user-name">@Model.User.UserName</h5>
+        </div>
+        <hr>
+        <div class="main-info mt-4 ml-3">
+            <div class="d-flex">
+                <h5 class="mr-3">Основная информация</h5> 
+                <a class="text-primary font-italic" type="button" data-toggle="modal" data-target="#editForm">Редактировать</a>
+            </div>
+            <div id="user-name-main">
+                <p><small class="text-secondary font-italic mr-2">Имя: </small>@Model.User.UserName</p>
+            </div>
+            <p><small class="text-secondary font-italic mr-2">Эл.почта: </small>@Model.User.Email</p>
+            <div id="user-phone">
+                <p><small class="text-secondary font-italic mr-2">Телефон: </small>@Model.User.PhoneNumber</p>
+            </div>
+
+        </div>
+        <hr>
+        <div class="d-flex justify-content-start align-items-baseline">
+            <h5 class="m-3 pb-3">Ваши резюме</h5> <a asp-controller="Resumes" asp-action="AddResume" class="font-italic">Создать резюме</a>
+        </div>
+        @if (Model.Resumes.Count == 0)
+        {
+            <div class="note">
+                <p class="text-secondary font-italic">Заполните информацию о себе, чтобы у вас получилось готовое для публикации резюме</p>
+            </div>
+        }
+        <div class="resume-block d-flex justify-content-around">
+            @if (Model.Resumes.Count != 0)
+            {
+                @foreach (var resume in @Model.Resumes)
+                {
+
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <a asp-controller="Resumes" asp-action="Index" asp-route-resumeId="@resume.Id">
+                                <h5 class="card-subtitle mb-2 text-muted">@resume.Name</h5>
+                            </a>
+                            <p class="card-text">Статус: @resume.Status</p>
+                            <p class="card-text"><small class="font-italic text-secondary">Дата обновления:
+                            @if (@resume.DateOfUpdate != null){@resume.DateOfUpdate.Value.Date.ToShortDateString()}
+                           </small></p>
+                            <p class="d-flex justify-content-between">
+                                <a asp-controller="Resumes" asp-action="Update" asp-route-id="@resume.Id" type="submit">
+                                    <button class="btn-sm btn-outline-primary">Обновить</button>
+                                </a>
+                                <a asp-controller="Resumes" asp-action="EditResume" asp-route-id="@resume.Id" asp-route-userid="@Model.User.Id" type="submit">
+                                    <button class="btn-sm btn-outline-primary">Редактировать</button>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="modal fade" id="editForm">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-uppercase" id="editModalLabel">Редактирование</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form">
+                            <div class="form-group">
+                                <label for="usernameInput">Имя </label>
+                                <input type="text" class="form-control" id="username" placeholder="@Model.User.UserName">
+                            </div>
+                            <div class="form-group">
+                                <label for="phoneInput">Телефон</label>
+                                <input type="text" class="form-control" id="phone" placeholder="@Model.User.PhoneNumber">
+                            </div>
+                            <div class="form-group">
+                                <label for="avatarFile">Аватар</label>
+                                <input type="file" class="form-control" id="avatar">
+                            </div>
+                            <input type="hidden" id="userId" value="@Model.User.Id">
+                            <button type="button"
+                                    class="btn btn-outline-primary" id="done" onclick="EditAjax()">Изменить</button>
+                        </form>
+                        <div class="modal-body register-succes" id="succes">
+                            <h4>Изменено!</h4>
+                            <i class="check-custom fas fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+<script >
+        $('#succes').hide();
+        function EditAjax(){
+            var userId = $('#userId').val()
+            var userName = $('#username').val()
+            var phone = $('#phone').val()
+            var avatar = $('#avatar').val()
+           $.ajax({
+               url : '@Url.Action("EditAjax", "Account")',
+               type : 'GET',
+               data : {
+                   'userId' : userId,
+                   'userName' : userName,
+                   'phone' : phone,
+                   'avatar' : avatar
+               },
+               success : function (data){
+                   $('#user-name').html(data.userName);
+                   $('#user-name-main').html('<p>' + data.userName + '</p>');
+                   $('#user-phone').html('<p>' + data.phoneNumber + '</p>');
+                   $('#user-avatar').text(data.avatarPath);
+                   console.log(data);
+                   console.log(data.avatarPath);
+               }
+            });
+            $('#form').hide();
+            $('#succes').show();
+            
+        }
+        
+    </script>
+}

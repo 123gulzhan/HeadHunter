@@ -1,0 +1,166 @@
+﻿@model Resume
+@using Microsoft.AspNetCore.Identity
+@using HeadHunter.Enums
+
+@{
+    ViewBag.Title = "Резюме";
+    Layout = "_Layout";
+}
+
+<div class="m-2 d-flex align-items-baseline">
+    <h4 class="pr-4">@Model.Name</h4>
+    <a asp-controller="Resumes" asp-action="EditResume" asp-route-id="@Model.Id" asp-route-userid="@Model.ApplicantId" type="submit">
+        <button class="btn-sm btn-outline-primary">Редактировать</button></a>
+    </div>
+<table>
+    <tr><td>Статус резюме </td><td>@Model.Status</td></tr>
+    <tr><td>Дата обновления </td>
+        @if (Model.DateOfUpdate != null)
+        {
+            <td>@Model.DateOfUpdate.Value.Date.ToShortDateString()</td>
+        }
+        else
+        {
+            <td>Не обновлялось</td>
+        }
+    </tr>
+    @if (Model.Status == Status.Публичное)
+    {
+        <tr><td>Дата публикации </td><td>@Model.DateOfPublication.Value.Date.ToShortDateString()</td></tr>
+    }
+    <tr><td class="pr-2">Категория </td><td class="ml-3">@Model.Category.Name</td></tr>
+    <tr><td class="pr-2">Ожидаемая зарплата </td><td class="ml-3">@Model.Salary</td></tr>
+    <tr><td class="pr-2">Конт.Email </td><td class="ml-3">@Model.Email</td></tr>
+    <tr><td class="pr-2">Конт.телефон </td><td class="ml-3">@Model.Phone</td></tr>
+    <tr><td class="pr-2">Телеграм</td><td class="ml-3">@Model.Telegram</td></tr>
+    <tr><td class="pr-2">Ссылка на Фэйсбук </td><td class="ml-3"><a href="@Model.Facebook">@Model.Facebook</a>/<td></tr>
+    <tr><td class="pr-2">Ссылка на Линкедин </td><td class="ml-3"><a href="@Model.LinkedIn">@Model.LinkedIn</a></td></tr>
+</table>
+<hr>
+<div class="job-experience-block mt-3">
+        <div class="row justify-content-between mx-3">
+            <h5>Опыт работы</h5>
+            <button type="button" id="addJobExp" class="btn-sm btn-outline-primary my-1" data-toggle="modal" data-target="#staticBackdrop">
+                Добавить опыт работы
+            </button>
+        </div>
+        <div class="modal fade" id="staticBackdrop" name="modalJob" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mx-auto mt-3" id="staticBackdropLabel">Опыт работы</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @{
+                            await Html.RenderPartialAsync("../PartialViews/JobExperienceFormPartial", new JobExperience(){ResumeId = @Model.Id});
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="experience-list">
+            @if (Model.JobExperiences.Count != 0)
+            {
+                <ul>
+                    @foreach (var job in Model.JobExperiences)
+                    {
+                        <li class="my-2 pt-2">
+                            <table>
+                                <tr><td class="text-secondary font-italic"><small>Компания - </small></td><td class="pl-2">@job.CompanyName</td></tr>
+                                <tr><td class="text-secondary font-italic"><small>Должность - </small></td><td class="pl-2">@job.Name</td></tr>
+                                <tr><td class="text-secondary font-italic"><small>Период работы - </small></td><td class="pl-2">@job.DateOfBegin.ToShortDateString() - @job.DateOfEnd.ToShortDateString()</td></tr>
+                            </table>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <hr>
+<div class="qualifications-block mt-3">
+    <div class="row justify-content-between mx-3">
+        <h5>Повышение квалификации</h5>
+        <button type="button" id="addQual" class="btn-sm btn-outline-primary my-1" data-toggle="modal" data-target="#staticBackdropQual">
+            Добавить информацию о повышении квалификации
+        </button>
+    </div>
+    <div class="modal fade" id="staticBackdropQual" name="modalQual" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropQualLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-custom-light">
+                <div class="modal-header">
+                    <h5 class="mx-auto mt-3" id="staticBackdropQualLabel">Повышение квалификации</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @{
+                        await Html.RenderPartialAsync("../PartialViews/QualificationFormPartial", new Qualification(){ResumeId = @Model.Id});
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="experience-list">
+        @if (Model.Qualifications.Count != 0)
+        {
+            <ul>
+                @foreach (var qual in Model.Qualifications)
+                {
+                    <li class="my-2 pt-2">
+                        <table>
+                            <tr><td class="text-secondary font-italic"><small>Компания - </small></td><td class="pl-2">@qual.CompanyName</td></tr>
+                            <tr><td class="text-secondary font-italic"><small>Квалификация - </small></td><td class="pl-2">@qual.Name</td></tr>
+                            <tr><td class="text-secondary font-italic"><small>Период прохождения - </small></td><td class="pl-2">@qual.DateOfBegin.ToShortDateString() - @qual.DateOfEnd.ToShortDateString()</td></tr>
+                        </table>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function (){
+        var modalJob = document.getElementsByName('modalJob');
+        var modalQual = document.getElementsByName('modalQual');
+        modalJob.hide;
+        modalQual.hide;
+        
+        $('#addJobExp').click(function (event){
+            event.preventDefault();
+            modalJob.show;
+        })     
+        
+        $('#addQual').click(function (event){
+            event.preventDefault();
+            modalQual.show;
+        })   
+    });
+
+</script>
+
+@* @section Scripts *@
+@* { *@
+@*     <script> *@
+@*     $(document).ready(function (){ *@
+@*         var modalJob = document.getElementsByName('modalJob'); *@
+@*         var modalQual = document.getElementsByName('modalQual'); *@
+@*         modalJob.hide; *@
+@*         modalQual.hide; *@
+@* *@
+@*         $('#addJobExp').click(function (event){ *@
+@*             event.preventDefault(); *@
+@*             modalJob.show; *@
+@*         }) *@
+@* *@
+@*         $('#addQual').click(function (event){ *@
+@*             event.preventDefault(); *@
+@*             modalQual.show; *@
+@*         }) *@
+@*     }); *@
+@*     </script> *@
+@* } *@

@@ -6,9 +6,7 @@ namespace HeadHunter.Services
 {
     public class RoleInitializer
     {
-        public static async Task Initialize(
-            RoleManager<IdentityRole> roleManager,
-            UserManager<User> userManager)
+        public static async Task Initialize(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             var roles = new[] {"applicant", "employer"};
             

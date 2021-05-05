@@ -1,0 +1,28 @@
+﻿@model Qualification
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
+
+<form asp-controller="Resumes" asp-action="AddQualification" method="post">
+    <input type="hidden" asp-for="ResumeId" value="@Model.ResumeId">
+    <div class="form-group m-3">
+        <label asp-for="DateOfBegin" class="control-label">Дата начала:</label>
+        <span asp-validation-for="DateOfBegin"></span><br>
+        <input asp-for="DateOfBegin" type="date" class="form-control">
+    </div>
+    <div class="form-group m-3">
+        <label asp-for="DateOfEnd" class="control-label">Дата окончания:</label>
+        <span asp-validation-for="DateOfEnd"></span><br>
+        <input asp-for="DateOfEnd" type="date" class="form-control">
+    </div>
+    <div class="form-group m-3">
+        <label asp-for=CompanyName class="control-label">Компания:</label>
+        <span asp-validation-for="CompanyName"></span><br>
+        <input asp-for="CompanyName" class="form-control" placeholder="Название компании">
+        <br>
+        <label asp-for=Name>Квалификация:</label>
+        <span asp-validation-for="Name" class="control-label"></span><br>
+        <input asp-for="Name" class="form-control" placeholder="Квалификация">
+    </div>
+    <button type="submit" class="btn btn-secondary ml-3 my-3">Добавить</button>
+</form>

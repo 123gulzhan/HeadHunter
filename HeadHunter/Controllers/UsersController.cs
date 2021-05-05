@@ -22,34 +22,20 @@ namespace HeadHunter.Controllers
         }
         
         [HttpGet]
-        //[Authorize(Roles = "applicant")]
-        public async Task<IActionResult> IndexAsync(string userId)
+        public async Task<IActionResult> ApplicantProfileAsync(string userId)
         {
             User user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return NotFound();
 
-            List<Respond> responds = _db.Responds.Include(respond => respond.Resume)
-                .ThenInclude(r => r.Applicant)
-                .Join(_db.Resumes.Where(resume => resume.ApplicantId == userId),
-                    respond => respond.ResumeId,
-                    resume => resume.ApplicantId,
-                    (respond, resume) => new Respond
-                    {
-                        Id = respond.Id,
-                        DateOfRespond = respond.DateOfRespond,
-                        ResumeId = resume.Id,
-                        VacancyId = respond.VacancyId
-                    })
-                .OrderByDescending(r => r.DateOfRespond)
-                .ToList();
+            List<Respond> responds = _db.Responds.ToList();
             
             ApplicantViewModel model = new ApplicantViewModel
             {
                 User = user,
                 Resumes = _db.Resumes.Where(r => r.ApplicantId == userId).ToList(),
-                JobExperiences = _db.JobExperiences.Where(j => j.ApplicantId == userId).ToList(),
-                Qualifications = _db.Qualifications.Where(q => q.ApplicantId == userId).ToList(),
+                JobExperiences = _db.JobExperiences.ToList(),
+                Qualifications = _db.Qualifications.ToList(),
                 Responds = responds
             };
             return View(model);

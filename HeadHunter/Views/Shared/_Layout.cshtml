@@ -34,7 +34,7 @@
                             <form asp-action="Logout" asp-controller="Account" method="post">
                                 @if (User.IsInRole("applicant"))
                                 {
-                                    <a asp-action="Index" asp-controller="Users" asp-route-userId="@UserManager.GetUserId(User)">
+                                    <a asp-action="ApplicantProfile" asp-controller="Users" asp-route-userId="@UserManager.GetUserId(User)">
                                         <i class="fas fa-user-tie" style="font-size: 30px; color: #0366d6" aria-hidden="true"></i>
                                     </a>
                                 }

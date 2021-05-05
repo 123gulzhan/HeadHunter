@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using HeadHunter.Enums
+@model Resume
+@inject UserManager<User> UserManager
+
+@{
+    ViewBag.Title = "Создание резюме";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-between">
+    <h4 class="mx-3">@ViewBag.Title</h4>
+    <p class="text-secondary font-italic px-2">@Status.Неопубликованное</p>
+</div>
+
+<form asp-controller="Resumes" asp-action="AddResume" method="post">
+    <input type="hidden" asp-for="ApplicantId" value="@UserManager.GetUserId(User)">
+    
+        <div class="form-group mt-2">
+            <label asp-for="CategoryId" class="control-label">Категория:</label><br>
+            @if (ViewBag.Categories.Count != null)
+            {
+                <select asp-for="CategoryId">
+                    @foreach (var cat in ViewBag.Categories)
+                    {
+                        <option class="col-4" value="@cat.Id">@cat.Name</option>
+                    }
+                </select>
+            }
+        </div>
+        <div class=" mt-2">
+            <label asp-for="Name" class="control-label">Название резюме:</label>
+            <span asp-validation-for="Name"></span><br>
+            <input asp-for="Name" class="col-4">
+        </div>
+        <div class="form-group mt-2">
+            <label asp-for="Salary" class="">Ожидаемая зарплата:</label>
+            <span asp-validation-for="Salary"></span><br>
+            <input asp-for="Salary" class="col-4" placeholder="Сумма, в тенге">
+        </div>
+    
+    
+    <div class="form-group mt-2">
+        <label asp-for="Email" class="control-label">Email:</label>
+        <span asp-validation-for="Email"></span><br>
+        <input asp-for="Email" class="col-4" value="@UserManager.GetUserAsync(User).Result.Email">
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="Telegram" class="control-label">Ваш логин в телеграм:</label>
+        <span asp-validation-for="Telegram"></span><br>
+        <input asp-for="Telegram" class="col-4" placeholder="login">
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="Phone" class="control-label">Конт.телефон:</label>
+        <span asp-validation-for="Phone"></span><br>
+        <input asp-for="Phone" class="col-4" value="@UserManager.GetUserAsync(User).Result.PhoneNumber">
+    </div>
+    
+    <div class="form-group mt-2">
+        <label asp-for="Facebook" class="control-label">Ссылка на ваш профиль Фэйсбук:</label>
+        <span asp-validation-for="Facebook"></span><br>
+        <input asp-for="Facebook" class="col-4" placeholder="Вставьте ссылку">
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="LinkedIn" class="control-label">Ссылка на ваш профиль Линкедин:</label>
+        <span asp-validation-for="LinkedIn"></span><br>
+        <input asp-for="LinkedIn" class="col-4" placeholder="Вставьте ссылку">
+    </div>
+    <hr>
+    
+    <button type="submit" class="btn btn-secondary ml-3 my-3">Добавить</button>
+</form>

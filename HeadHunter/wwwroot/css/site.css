@@ -75,6 +75,19 @@ body {
   text-align: center;
 }
 
+.bg-custom-light{
+  background-color: #dedede;
+}
+.check-custom{
+  font-size: 100px;
+  color: #28a743;
+}
+
+.register-succes{
+  text-align: center;
+}
+
+
 .footer {
   position: absolute;
   bottom: 0;

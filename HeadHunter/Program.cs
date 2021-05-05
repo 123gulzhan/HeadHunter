@@ -24,7 +24,9 @@ namespace HeadHunter
             {
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var context = services.GetRequiredService<HeadHunterContext>();
                 await RoleInitializer.Initialize(roleManager, userManager);
+                 DataSeeder.SeedCategories(context);
             }
             catch (Exception exception)
             {
