@@ -6,6 +6,7 @@ using HeadHunter.Models;
 using HeadHunter.Services;
 using HeadHunter.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -51,7 +52,7 @@ namespace HeadHunter.Controllers
                 string avatarPath = $"\\Images\\Avatars\\defaultavatar.jpg";
                 if (model.File != null)
                 {
-                    avatarPath = $"Images\\Avatars\\{model.File.FileName}";
+                    avatarPath = $"\\Images\\Avatars\\{model.File.FileName}";
                     _uploadService.Upload(path, model.File.FileName, model.File);
                 }
                 model.AvatarPath = avatarPath;
@@ -122,7 +123,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public IActionResult Edit(string id = null)
         {
             User user = _userManager.FindByIdAsync(id).Result;
@@ -138,7 +139,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Edit(EditUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -173,6 +174,39 @@ namespace HeadHunter.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditAjax(string userId, string userName, string phone, IFormFile avatar)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                if (userName != null)
+                {
+                    user.UserName = userName;
+                }
+                if (phone != null)
+                {
+                    user.PhoneNumber = phone;
+                }
+                if (avatar != null)
+                {
+                    string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\Images\\Avatars");
+                    string avatarPath = $"\\Images\\Avatars\\{avatar.FileName}";
+                    _uploadService.Upload(path, avatar.FileName, avatar);
+
+                    user.AvatarPath = avatarPath;
+                }
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    await _db.SaveChangesAsync();
+                }
+            }
+            return Json(user);
+        }
+
+        
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> ChangePassword(string id)

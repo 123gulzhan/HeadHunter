@@ -3,22 +3,24 @@
 @using HeadHunter.Enums
 
 @{
-    Layout = null;
+    ViewBag.Title = "Резюме";
+    Layout = "_Layout";
 }
+
 <table>
-    <tr><td>Статус резюме - </td><td></td>@Model.Status</tr>
+    <tr><td>Статус резюме </td><td>@Model.Status</td></tr>
     @if (Model.Status == Status.Публичное)
     {
-        <tr><td>ата публикации - </td><td>@Model.DateOfPublication.Value.Date.ToShortDateString()</td></tr>
+        <tr><td>Дата публикации </td><td>@Model.DateOfPublication.Value.Date.ToShortDateString()</td></tr>
     }
-    <tr><td>Название - </td><td>@Model.Name</td></tr>
-    <tr><td>Категория - </td><td>@Model.Category.Name</td></tr>
-    <tr><td>Ожидаемая зарплата - </td><td>@Model.Salary</td></tr>
-    <tr><td>Конт.Email - </td><td>@Model.Email</td></tr>
-    <tr><td>Конт.телефон - </td><td>@Model.Phone</td></tr>
-    <tr><td>Телеграм</td><td>@Model.Telegram</td></tr>
-    <tr><td>Ссылка на Фэйсбук - </td><td>@Model.Facebook</td></tr>
-    <tr><td>Ссылка на Линкедин - </td><td>@Model.LinkedIn</td></tr>
+    <tr><td>Название </td><td class="ml-3">@Model.Name</td></tr>
+    <tr><td>Категория </td><td class="ml-3">@Model.Category.Name</td></tr>
+    <tr><td>Ожидаемая зарплата </td><td class="ml-3">@Model.Salary</td></tr>
+    <tr><td>Конт.Email </td><td class="ml-3">@Model.Email</td></tr>
+    <tr><td>Конт.телефон </td><td class="ml-3">@Model.Phone</td></tr>
+    <tr><td>Телеграм</td><td class="ml-3">@Model.Telegram</td></tr>
+    <tr><td>Ссылка на Фэйсбук </td><td class="ml-3"><a href="@Model.Facebook">@Model.Facebook</a>/<td></tr>
+    <tr><td>Ссылка на Линкедин </td><td class="ml-3"><a href="@Model.LinkedIn">@Model.LinkedIn</a></td></tr>
     <tr><td></td><td></td></tr>
 </table>
 
@@ -40,7 +42,7 @@
                     </div>
                     <div class="modal-body">
                         @{
-                            await Html.RenderPartialAsync("../PartialViews/JobExperienceFormPartial", new JobExperience());
+                            await Html.RenderPartialAsync("../PartialViews/JobExperienceFormPartial", new JobExperience(){ResumeId = @Model.Id});
                         }
                     </div>
                 </div>
@@ -83,7 +85,7 @@
                 </div>
                 <div class="modal-body">
                     @{
-                        await Html.RenderPartialAsync("../PartialViews/QualificationFormPartial", new Qualification());
+                        await Html.RenderPartialAsync("../PartialViews/QualificationFormPartial", new Qualification(){ResumeId = @Model.Id});
                     }
                 </div>
             </div>

@@ -4,7 +4,7 @@
 @inject UserManager<User> UserManager
 
 <form asp-controller="Resumes" asp-action="AddJobExperience" method="post">
-    <input type="hidden" asp-for="ResumeId" value="@UserManager.GetUserId(User)">
+    <input type="hidden" asp-for="ResumeId" value="@Model.ResumeId">
     <div class="form-group m-3">
         <label asp-for="DateOfBegin" class="control-label">Дата начала работы:</label>
             <span asp-validation-for="DateOfBegin"></span><br>
