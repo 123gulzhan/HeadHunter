@@ -21,4 +21,8 @@
       <Folder Include="wwwroot\Images\Avatars" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Migrations\HeadHunterContextModelSnapshot.cs" />
+    </ItemGroup>
+
 </Project>
