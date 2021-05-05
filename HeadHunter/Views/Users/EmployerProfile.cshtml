@@ -92,11 +92,17 @@
 {
     <script >
         $('#succes').hide();
-        function EditAjax(){
+        function EditAjax(inputId){
             var userId = $('#userId').val()
             var userName = $('#username').val()
             var phone = $('#phone').val()
-            var avatar = $('#avatar').val()
+            var input = document.getElementById(inputId);
+            var avatars = input.files;
+            var formData = new FormData();
+            
+            for (var i = 0; i != avatars.length; i++) {
+                formData.append("avatars", avatars[i])
+            }
            $.ajax({
                url : '@Url.Action("EditAjax", "Account")',
                type : 'GET',
@@ -104,7 +110,7 @@
                    'userId' : userId,
                    'userName' : userName,
                    'phone' : phone,
-                   'avatar' : avatar
+                   'avatar' : formData
                },
                success : function (data){
                    $('#user-name').html(data.userName);
@@ -112,6 +118,7 @@
                    $('#user-phone').html('<p>' + data.phoneNumber + '</p>');
                    $('#user-avatar').text(data.avatarPath);
                    console.log(data);
+                   console.log(data.avatarPath);
                }
             });
             $('#form').hide();
