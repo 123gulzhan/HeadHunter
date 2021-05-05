@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunter.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20210502140919_Initial")]
+    [Migration("20210505031547_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,9 +39,6 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("ApplicantId")
-                        .HasColumnType("text");
-
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -63,8 +60,6 @@ namespace HeadHunter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId");
-
                     b.HasIndex("ResumeId");
 
                     b.ToTable("JobExperiences");
@@ -75,27 +70,26 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("ApplicantId")
-                        .HasColumnType("text");
-
                     b.Property<string>("CompanyName")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
 
-                    b.Property<DateTime>("DateOfBegining")
+                    b.Property<DateTime>("DateOfBegin")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DateOfEnd")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
 
                     b.Property<string>("ResumeId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId");
 
                     b.HasIndex("ResumeId");
 
@@ -137,6 +131,9 @@ namespace HeadHunter.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("DateOfPublication")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DateOfUpdate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
@@ -409,28 +406,20 @@ namespace HeadHunter.Migrations
 
             modelBuilder.Entity("HeadHunter.Models.JobExperience", b =>
                 {
-                    b.HasOne("HeadHunter.Models.User", "Applicant")
-                        .WithMany()
-                        .HasForeignKey("ApplicantId");
-
-                    b.HasOne("HeadHunter.Models.Resume", null)
+                    b.HasOne("HeadHunter.Models.Resume", "Resume")
                         .WithMany("JobExperiences")
                         .HasForeignKey("ResumeId");
 
-                    b.Navigation("Applicant");
+                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("HeadHunter.Models.Qualification", b =>
                 {
-                    b.HasOne("HeadHunter.Models.User", "Applicant")
-                        .WithMany()
-                        .HasForeignKey("ApplicantId");
-
-                    b.HasOne("HeadHunter.Models.Resume", null)
+                    b.HasOne("HeadHunter.Models.Resume", "Resume")
                         .WithMany("Qualifications")
                         .HasForeignKey("ResumeId");
 
-                    b.Navigation("Applicant");
+                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("HeadHunter.Models.Respond", b =>

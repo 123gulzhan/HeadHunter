@@ -14,8 +14,9 @@ namespace HeadHunter.Models
         public string Phone { get; set; }
         public string Facebook { get; set; }
         public string LinkedIn { get; set; }
-        public Status Status { get; set; }
+        public Status Status { get; set; } = Status.Приватное;
         public DateTime? DateOfPublication { get; set; }
+        public DateTime? DateOfUpdate { get; set; }
 
         public string ApplicantId { get; set; }
         public virtual User Applicant { get; set; }
@@ -23,8 +24,10 @@ namespace HeadHunter.Models
         public string CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
-        public virtual List<JobExperience> JobExperiences { get; set; }
+        public virtual List<JobExperience> JobExperiences { get; set; } 
 
-        public virtual List<Qualification> Qualifications { get; set; }
+        public virtual List<Qualification> Qualifications { get; set; } 
+
+        
     }
 }

@@ -3,29 +3,26 @@
 @model JobExperience
 @inject UserManager<User> UserManager
 
-<form asp-controller="Users" asp-action="AddJobExperience" method="post">
-    <input type="hidden" asp-for="ApplicantId" value="@UserManager.GetUserId(User)">
-    <div class="my-3">
-        <label asp-for="DateOfBegin">Дата начала работы:
+<form asp-controller="Resumes" asp-action="AddJobExperience" method="post">
+    <input type="hidden" asp-for="ResumeId" value="@UserManager.GetUserId(User)">
+    <div class="form-group m-3">
+        <label asp-for="DateOfBegin" class="control-label">Дата начала работы:</label>
             <span asp-validation-for="DateOfBegin"></span><br>
-            @Html.TextBoxFor(j => j.DateOfBegin, new {@class = "form-control", placeholder = "dd.mm.yyyy"})
-            @* <input asp-for="DateOfBegining" type="date"> *@
-        </label>
+            <input asp-for="DateOfBegin" type="date" class="form-control">
     </div>
-    <div class="my-3">
-        <label asp-for="DateOfEnd">Дата окончания работы:
+    <div class="form-group m-3">
+        <label asp-for="DateOfEnd" class="control-label">Дата окончания работы:</label>
             <span asp-validation-for="DateOfEnd"></span><br>
-            <input asp-for="DateOfEnd" type="date"></label>
+            <input asp-for="DateOfEnd" type="date" class="form-control">
     </div>
-    <div class="my-3">
-        <label asp-for=CompanyName>Компания:
+    <div class="form-group m-3">
+        <label asp-for=CompanyName class="control-label">Компания:</label>
             <span asp-validation-for="CompanyName"></span><br>
-            <input asp-for="CompanyName" placeholder="Название компании"></label>
+            <input asp-for="CompanyName" class="form-control" placeholder="Название компании">
+        <br>
+            <label asp-for=Name>Должность</label>
+            <span asp-validation-for="Name" class="control-label"></span><br>
+            <input asp-for="Name" class="form-control" placeholder="Должность">
     </div>
-    <div class="my-3">
-        <label asp-for=Name><span asp-validation-for="Name"></span><br>
-            <input asp-for="Name" placeholder="Должность">
-        </label>
-    </div>
-    <button type="submit" class="btn btn-primary">Добавить</button>
+    <button type="submit" class="btn btn-secondary ml-3 my-3">Добавить</button>
 </form>

@@ -1,0 +1,54 @@
+﻿@model HeadHunter.ViewModels.ApplicantViewModel
+
+@{
+    ViewBag.Title = "Личный кабинет";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="text-right"><a asp-action="Edit" asp-controller="Account" asp-route-id=@Model.User.Id><button class="btn btn-secondary">Редактировать профиль</button></a></div>
+    <div class="user-header text-center">
+        <img src="@Model.User.AvatarPath" class="applicant-avatar col-md-2" alt="фото соискателя">
+        <h4 class="text-secondary my-2">Сотрудник</h4>
+        <h5 class="text-secondary my-3">@Model.User.UserName</h5>
+    </div>
+
+    @if (Model.Resumes.Count == 0)
+    {
+        <div class="note">
+            <p class="text-secondary font-italic">Заполните информацию о себе, чтобы у вас получилось готовое для публикации резюме</p>
+        </div>
+    }
+    <a asp-controller="Resumes" asp-action="AddResume">Создать резюме</a>
+    <div class="main-info mt-3 ml-3">
+        <h5>Основная информация</h5>
+        <p><small class="text-secondary font-italic mr-2">Name: </small>@Model.User.UserName</p>
+        <p><small class="text-secondary font-italic mr-2">Email: </small>@Model.User.Email</p>
+        <p><small class="text-secondary font-italic mr-2">Phone: </small>@Model.User.PhoneNumber</p>
+    </div>
+    <hr>
+    
+    <div class="resume-block d-flex justify-content-around">
+        @if (Model.Resumes.Count != 0)
+        {
+            @foreach (var resume in @Model.Resumes)
+            {
+                <div class="card bg-custom-light" style="width: 18rem;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item font-weight-bold">Резюме: @resume.Name</li>
+                        <li class="list-group-item">Статус: @resume.Status</li>
+                        @if (@resume.DateOfUpdate != null)
+                        {
+                            <li class="list-group-item"><small class="font-italic text-secondary">Дата обновления: @resume.DateOfUpdate.Value.Date.ToShortDateString()</small></li>    
+                        }
+                        <li class="list-group-item d-flex justify-content-between">
+                            <a asp-controller="Resumes" asp-action="Update" asp-route-id="@resume.Id" type="submit" class="btn btn-sm btn-info">Обновить</a>
+                            <a href="#" type="submit" class="btn btn-sm btn-info">Редактировать</a>
+                        </li>
+                    </ul>
+                </div>        
+            }
+        }
+    </div>
+
+</div>

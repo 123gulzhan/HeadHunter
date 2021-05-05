@@ -65,6 +65,9 @@ body {
 .applicant-avatar{
   border-radius: 50%;
 }
+.bg-custom-light{
+  background-color: #dedede;
+}
 .footer {
   position: absolute;
   bottom: 0;

@@ -24,7 +24,7 @@ namespace HeadHunter.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime DateOfEnd { get; set; }
 
-        public string ApplicantId { get; set; }
-        public virtual User Applicant { get; set; }
+        public string ResumeId { get; set; }
+        public virtual Resume Resume { get; set; }
     }
 }

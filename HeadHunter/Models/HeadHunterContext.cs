@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HeadHunter.Models
 {
@@ -16,8 +18,6 @@ namespace HeadHunter.Models
         public HeadHunterContext(DbContextOptions options) : base(options)
         {
         }
-        
-       
         
     }
 }

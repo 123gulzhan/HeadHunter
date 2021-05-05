@@ -180,6 +180,7 @@ namespace HeadHunter.Migrations
                     LinkedIn = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     DateOfPublication = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    DateOfUpdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     ApplicantId = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<string>(type: "text", nullable: true)
                 },
@@ -236,22 +237,15 @@ namespace HeadHunter.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    CompanyName = table.Column<string>(type: "text", nullable: true),
-                    DateOfBegining = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Name = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    CompanyName = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    DateOfBegin = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DateOfEnd = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ApplicantId = table.Column<string>(type: "text", nullable: true),
                     ResumeId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_JobExperiences", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_JobExperiences_AspNetUsers_ApplicantId",
-                        column: x => x.ApplicantId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_JobExperiences_Resumes_ResumeId",
                         column: x => x.ResumeId,
@@ -265,22 +259,15 @@ namespace HeadHunter.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    CompanyName = table.Column<string>(type: "text", nullable: true),
-                    DateOfBegining = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Name = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    CompanyName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    DateOfBegin = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DateOfEnd = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ApplicantId = table.Column<string>(type: "text", nullable: true),
                     ResumeId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Qualifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Qualifications_AspNetUsers_ApplicantId",
-                        column: x => x.ApplicantId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Qualifications_Resumes_ResumeId",
                         column: x => x.ResumeId,
@@ -353,19 +340,9 @@ namespace HeadHunter.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobExperiences_ApplicantId",
-                table: "JobExperiences",
-                column: "ApplicantId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_JobExperiences_ResumeId",
                 table: "JobExperiences",
                 column: "ResumeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Qualifications_ApplicantId",
-                table: "Qualifications",
-                column: "ApplicantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Qualifications_ResumeId",

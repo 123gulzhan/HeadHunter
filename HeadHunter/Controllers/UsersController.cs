@@ -23,7 +23,7 @@ namespace HeadHunter.Controllers
         
         [HttpGet]
         //[Authorize(Roles = "applicant")]
-        public async Task<IActionResult> IndexAsync(string userId)
+        public async Task<IActionResult> ApplicantProfileAsync(string userId)
         {
             User user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -49,24 +49,15 @@ namespace HeadHunter.Controllers
             {
                 User = user,
                 Resumes = _db.Resumes.Where(r => r.ApplicantId == userId).ToList(),
-                JobExperiences = _db.JobExperiences.Where(j => j.ApplicantId == userId).ToList(),
-                Qualifications = _db.Qualifications.Where(q => q.ApplicantId == userId).ToList(),
+                JobExperiences = _db.JobExperiences.ToList(),
+                Qualifications = _db.Qualifications.ToList(),
                 Responds = responds
             };
             return View(model);
         }
 
-        [HttpPost]
-        public IActionResult AddJobExperience(JobExperience experience)
-        {
-            if (experience.ApplicantId == null) return NotFound();
-            if (ModelState.IsValid)
-            {
-                _db.JobExperiences.Add(experience);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return NotFound();
-        }
+      
+
+       
     }
 }
