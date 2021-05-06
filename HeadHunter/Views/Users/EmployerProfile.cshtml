@@ -1,4 +1,5 @@
-﻿@model HeadHunter.ViewModels.EmployerViewModel
+﻿@using HeadHunter.Enums
+@model HeadHunter.ViewModels.EmployerViewModel
 
 @{
     ViewBag.Title = "Личный кабинет";
@@ -47,6 +48,14 @@
                             <h5>
                                 <a asp-action="Index" asp-controller="Vacancies" asp-route-id="@vacancy.Id" class="text-primary">@vacancy.Name</a>
                             </h5>
+                            @if (@vacancy.Status == Status.Неопубликованное)
+                            {
+                                <a asp-action="PublicationVacancy" asp-controller="Vacancies" asp-route-id="@vacancy.Id" class="text-primary font-italic" >Опубликовать</a>
+                            }
+                            @if (@vacancy.Status == Status.Публичное)
+                            {
+                                <a asp-action="UnpublicationVacancy" asp-controller="Vacancies" asp-route-id="@vacancy.Id" class="text-primary font-italic">Снять с публикации</a>
+                            }
                         </div>
                         <div class="card-body text-secondary text-center">
                             <p class="card-text">Зарплата - @vacancy.Salary</p>

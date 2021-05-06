@@ -143,6 +143,39 @@ namespace HeadHunter.Controllers
 
             return NotFound();
         }
+
+        [HttpGet]
+        public IActionResult PublicationVacancy(string id)
+        {
+            if (id != null)
+            {
+                Vacancy vacancy = _db.Vacancies.FirstOrDefault(v => v.Id == id);
+                if (vacancy != null)
+                {
+                    vacancy.Status = Status.Публичное;
+                    _db.Vacancies.Update(vacancy);
+                    _db.SaveChanges();
+                    return RedirectToAction("EmployerProfile", "Users", new {userId = vacancy.EmployerId});
+                }
+            }
+            return NotFound();
+        }
         
+        [HttpGet]
+        public IActionResult UnpublicationVacancy(string id)
+        {
+            if (id != null)
+            {
+                Vacancy vacancy = _db.Vacancies.FirstOrDefault(v => v.Id == id);
+                if (vacancy != null)
+                {
+                    vacancy.Status = Status.Неопубликованное;
+                    _db.Vacancies.Update(vacancy);
+                    _db.SaveChanges();
+                    return RedirectToAction("EmployerProfile", "Users", new {userId = vacancy.EmployerId});
+                }
+            }
+            return NotFound();
+        }
     }
 }
