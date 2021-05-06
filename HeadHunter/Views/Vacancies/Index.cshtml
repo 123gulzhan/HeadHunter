@@ -1,5 +1,7 @@
 ﻿@using HeadHunter.Enums
+@using Microsoft.AspNetCore.Identity
 @model Vacancy
+@inject UserManager<User> UserManager
 
 @{
     ViewBag.Title = "Вакансия";
@@ -12,6 +14,10 @@
       <h5>@Model.Salary</h5>
       <h5>@Model.Employer.UserName</h5>
       <p>Категория: @Model.Category.Name</p>
+      @if (User.Identity.IsAuthenticated && User.IsInRole("applicant"))
+      {
+        <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#respondForm"></button>
+      }
       <hr>
       <table>
         <tr>

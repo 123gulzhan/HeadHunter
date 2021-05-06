@@ -116,6 +116,39 @@
             }
         }
     </div>
+      <div class="d-flex justify-content-start align-items-baseline">
+                <h5 class="m-3 pb-3">Ваши отклики</h5>
+            </div>
+                @if (Model.Responds.Count == 0)
+                {
+                    <div class="note">
+                        <p class="text-secondary font-italic">Вы не сделали ни одного отклика</p>
+                    </div>
+                }
+            <div class="respond-block d-flex justify-content-around">
+                @if (Model.Responds.Count != 0)
+                {
+                    @foreach (var respond in Model.Responds)
+                    {
+                         <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <a asp-controller="Responds" asp-action="Index" asp-route-respondId="@respond.Id">
+                                    <h5 class="card-subtitle mb-2 text-muted">@respond.Vacancy.Name</h5>
+                                </a>
+                                <p class="card-text mt-3"><small class="font-italic text-secondary">Дата отклика:
+                                    @if (@respond.DateOfRespond != null)
+                                    {
+                                        @respond.DateOfRespond.ToShortDateString()
+                                    }
+                                </small></p>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+    
+    
+    
     <div class="modal fade" id="editForm">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
