@@ -1,6 +1,7 @@
 ﻿@model Resume
 @using Microsoft.AspNetCore.Identity
 @using HeadHunter.Enums
+@inject UserManager<User> UserManager
 
 @{
     ViewBag.Title = "Резюме";
@@ -9,8 +10,11 @@
 
 <div class="m-2 d-flex align-items-baseline">
     <h4 class="pr-4">@Model.PositionName</h4>
-    <a asp-controller="Resumes" asp-action="EditResume" asp-route-id="@Model.Id" asp-route-userid="@Model.ApplicantId" type="submit">
-        <button class="btn-sm btn-outline-primary">Редактировать</button></a>
+    @if (@Model.ApplicantId == UserManager.GetUserId(User))
+    {
+        <a asp-controller="Resumes" asp-action="EditResume" asp-route-id="@Model.Id" asp-route-userid="@Model.ApplicantId" type="submit">
+            <button class="btn-sm btn-outline-primary">Редактировать</button></a>
+    }
     </div>
 <table>
     <tr><td>Статус резюме </td><td>@Model.Status</td></tr>
@@ -49,6 +53,8 @@
     }
 </table>
 <hr>
+@if (@Model.ApplicantId == UserManager.GetUserId(User))
+{
 <div class="job-experience-block mt-3">
         <div class="row justify-content-between mx-3">
             <h5>Опыт работы</h5>
@@ -134,6 +140,8 @@
         }
     </div>
 </div>
+    
+}
 
 <script>
     $(document).ready(function (){

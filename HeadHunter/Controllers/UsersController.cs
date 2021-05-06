@@ -20,25 +20,34 @@ namespace HeadHunter.Controllers
             _db = db;
             _userManager = userManager;
         }
-        
-        [HttpGet]
-        public async Task<IActionResult> ApplicantProfileAsync(string userId)
-        {
-            User user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound();
 
-            List<Respond> responds = _db.Responds.ToList();
-            
-            ApplicantViewModel model = new ApplicantViewModel
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ApplicantProfileAsync(string userId, string resumeId)
+        {
+            if (userId != null)
             {
-                User = user,
-                Resumes = _db.Resumes.Where(r => r.ApplicantId == userId).ToList(),
-                JobExperiences = _db.JobExperiences.ToList(),
-                Qualifications = _db.Qualifications.ToList(),
-                Responds = responds
-            };
-            return View(model);
+                User user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                    return NotFound();
+
+                List<Respond> responds = _db.Responds.ToList();
+
+                ApplicantViewModel model = new ApplicantViewModel
+                {
+                    User = user,
+                    Resumes = _db.Resumes.Where(r => r.ApplicantId == userId).ToList(),
+                    JobExperiences = _db.JobExperiences.ToList(),
+                    Qualifications = _db.Qualifications.ToList(),
+                    Responds = responds
+                };
+                if (resumeId != null) ViewBag.ResumeId = resumeId;
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet]

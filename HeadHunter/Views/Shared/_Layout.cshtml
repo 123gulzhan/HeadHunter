@@ -22,12 +22,24 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                                        {
+                                            @if (User.IsInRole("applicant"))
+                                            {
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("employer"))
+                                            {
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Resumes" asp-action="GetResumes" asp-route-employerId="@UserManager.GetUserAsync(User).Id">Публичные резюме</a>
+                                                </li>
+                                            }
+                                        }
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="form-inline ml-auto">
@@ -55,7 +67,7 @@
                             <a asp-action="Register" asp-controller="Account" class="btn">Регистрация</a>
                         </div>
                     }
-                    
+
                 </ul>
             </div>
         </div>
