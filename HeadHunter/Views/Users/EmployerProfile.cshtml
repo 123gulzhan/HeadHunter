@@ -61,7 +61,7 @@
                             <p class="card-text">Зарплата - @vacancy.Salary</p>
                             <p class="card-text"><small class="font-italic text-secondary">Дата обновления: @vacancy.DateOfUpdate.Value.Date.ToShortDateString()</small></p>
                         </div>
-                        <div class="card-footer bg-transparent border-secondary">
+                        <div class="card-footer bg-transparent border-secondary text-center">
                             <a class="btn btn-outline-primary" asp-action="Update" asp-controller="Vacancies" asp-route-id="@vacancy.Id">Обновить</a>
                             <a class="btn btn-outline-primary" asp-action="Edit" asp-controller="Vacancies" asp-route-id="@vacancy.Id">Редактировать</a>
                         </div>
