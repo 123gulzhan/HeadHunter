@@ -1,0 +1,41 @@
+﻿@using HeadHunter.Enums
+@model Vacancy
+
+@{
+    ViewBag.Title = "Вакансия";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-6">
+      <h4 class="pr-4">@Model.Name</h4>
+      <h5>@Model.Salary</h5>
+      <h5>@Model.Employer.UserName</h5>
+      <p>Категория: @Model.Category.Name</p>
+      <hr>
+      <table>
+        <tr>
+          <td>Требуемый опыт работы: @Model.Experience</td>
+        </tr>
+        <tr>
+          <td>Описание вакансии:</td>
+        </tr>
+        <tr>
+          <td>@Model.Description</td>
+        </tr>
+      </table>
+      <hr>
+      @if (@Model.Status == Status.Публичное)
+      {
+        <p>Вакансия опубликована @Model.DateOfPublication.Value.Date.ToShortDateString()</p>
+      }
+      @if (@Model.DateOfUpdate != null)
+      {
+        <p>Дата обновления вакансии @Model.DateOfUpdate.Value.Date.ToShortDateString()</p>
+      }
+      else
+      {
+        <p>Вакансия не обновлялась</p>
+      }
+      </div>
+</div>
