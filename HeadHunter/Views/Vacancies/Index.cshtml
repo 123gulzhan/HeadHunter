@@ -12,10 +12,10 @@
       <h5>@Model.Salary</h5>
       <h5>@Model.Employer.UserName</h5>
       <p>Категория: @Model.Category.Name</p>
-      <table class="table table-borderless">
+      <hr>
+      <table>
         <tr>
-          <td>Требуемый опыт работы</td>
-          <td>@Model.Experience</td>
+          <td>Требуемый опыт работы: @Model.Experience</td>
         </tr>
         <tr>
           <td>Описание вакансии:</td>
@@ -24,6 +24,7 @@
           <td>@Model.Description</td>
         </tr>
       </table>
+      <hr>
       @if (@Model.Status == Status.Публичное)
       {
         <p>Вакансия опубликована @Model.DateOfPublication.Value.Date.ToShortDateString()</p>
