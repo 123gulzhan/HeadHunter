@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using HeadHunter.Enums;
 using HeadHunter.Models;
@@ -123,6 +124,24 @@ namespace HeadHunter.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Update(string id)
+        {
+            if (id != null)
+            {
+                Vacancy vacancy = _db.Vacancies.FirstOrDefault(v => v.Id == id);
+                if (vacancy != null)
+                {
+                    vacancy.DateOfUpdate = DateTime.Now;
+                    _db.Vacancies.Update(vacancy);
+                    _db.SaveChanges();
+                    return RedirectToAction("EmployerProfile", "Users", new {userId = vacancy.EmployerId});
+                }
+            }
+
+            return NotFound();
         }
         
     }
