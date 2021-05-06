@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using HeadHunter.Enums;
 using HeadHunter.Models;
+using HeadHunter.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace HeadHunter.Controllers
 {
@@ -19,7 +23,7 @@ namespace HeadHunter.Controllers
             _db = db;
             _userManager = userManager;
         }
-        
+
         [HttpGet]
         public IActionResult Index(string resumeId)
         {
@@ -31,8 +35,9 @@ namespace HeadHunter.Controllers
 
             return NotFound();
         }
-        
+
         [HttpGet]
+        [Authorize(Roles = "applicant")]
         public IActionResult AddResume()
         {
             ViewBag.Categories = _db.Categories.ToList();
@@ -41,19 +46,21 @@ namespace HeadHunter.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "applicant")]
         public IActionResult AddResume(Resume resume)
         {
             if (ModelState.IsValid)
             {
                 _db.Resumes.Add(resume);
                 _db.SaveChanges();
-                return RedirectToAction("Index", "Resumes", new{resumeId = resume.Id});
+                return RedirectToAction("Index", "Resumes", new {resumeId = resume.Id});
             }
 
             return NotFound();
         }
-        
+
         [HttpPost]
+        [Authorize(Roles = "applicant")]
         public IActionResult AddJobExperience(JobExperience experience)
         {
             if (experience.ResumeId == null) return NotFound();
@@ -63,10 +70,12 @@ namespace HeadHunter.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Resumes", new {resumeId = experience.ResumeId});
             }
+
             return NotFound();
         }
 
         [HttpPost]
+        [Authorize(Roles = "applicant")]
         public async Task<IActionResult> AddQualification(Qualification qualification)
         {
             if (qualification.ResumeId == null) return NotFound();
@@ -74,18 +83,19 @@ namespace HeadHunter.Controllers
             {
                 Resume resume = _db.Resumes.FirstOrDefault(r => r.Id == qualification.ResumeId);
                 if (resume == null) return NotFound();
-                
+
                 resume.Qualifications.Add(qualification);
                 await _db.Qualifications.AddAsync(qualification);
                 _db.Resumes.Update(resume);
                 await _db.SaveChangesAsync();
                 return RedirectToAction("Index", "Resumes", new {resumeId = qualification.ResumeId});
             }
+
             return NotFound();
         }
 
-      
 
+        [Authorize(Roles = "applicant")]
         public IActionResult Update(string id)
         {
             if (id == null) return NotFound();
@@ -94,26 +104,24 @@ namespace HeadHunter.Controllers
             resume.DateOfUpdate = DateTime.Now;
             _db.Resumes.Update(resume);
             _db.SaveChanges();
-            return RedirectToAction("ApplicantProfile", "Users", new{userId = resume.ApplicantId});
+            return RedirectToAction("ApplicantProfile", "Users", new {userId = resume.ApplicantId});
         }
 
         [HttpGet]
-        public IActionResult EditResume(string id, string userid)
+        [Authorize(Roles = "applicant")]
+        public IActionResult EditResume(string id)
         {
             if (id == null) return NotFound();
             Resume resume = _db.Resumes.FirstOrDefault(r => r.Id == id);
-            if (resume == null || userid == null) return NotFound();
+            if (resume == null) return NotFound();
 
-            User user = _db.Users.FirstOrDefault(u => u.Id == userid);
-            if (user == null) return NotFound();
-            
-            resume.ApplicantId = userid; // дебаг юзера !!!!!!!!!!!!!!
             resume.DateOfUpdate = DateTime.Now;
             ViewBag.Categories = _db.Categories.ToList();
             return View(resume);
         }
 
         [HttpPost]
+        [Authorize(Roles = "applicant")]
         public IActionResult EditResume(Resume resume)
         {
             if (resume == null) return NotFound();
@@ -124,10 +132,12 @@ namespace HeadHunter.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Resumes", new {resumeId = resume.Id});
             }
+
             return NotFound();
         }
 
         [HttpPost]
+        [Authorize(Roles = "applicant")]
         public IActionResult Publish(string resumeId)
         {
             if (resumeId == null) return NotFound();
@@ -140,11 +150,13 @@ namespace HeadHunter.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("ApplicantProfile", "Users", new {userId = resume.ApplicantId});
             }
+
             return NotFound();
         }
-        
-        
+
+
         [HttpPost]
+        [Authorize(Roles = "applicant")]
         public IActionResult UnPublish(string resumeId)
         {
             if (resumeId == null) return NotFound();
@@ -157,9 +169,40 @@ namespace HeadHunter.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("ApplicantProfile", "Users", new {userId = resume.ApplicantId});
             }
+
             return NotFound();
         }
-        
-        
+
+        [HttpGet]
+        [Authorize(Roles = "employer")]
+        public IActionResult GetResumes(string employerId, string categoryId, string positionPart, int? page)
+        {
+            int pageSize = 2; //20 - сколько элементов будет на странице отображаться
+            int pageNumber = page ?? 1;
+
+            var resumes = _db.Resumes.OrderByDescending(r => r.DateOfUpdate);
+
+            IEnumerable<Category> categories = _db.Categories;
+
+            if (categoryId != null)
+            {
+                resumes = (IOrderedQueryable<Resume>) resumes.Where(r => r.CategoryId == categoryId);
+            }
+
+
+            if (positionPart != null)
+            {
+                resumes = (IOrderedQueryable<Resume>) resumes.Where(r => r.PositionName.Contains(positionPart));
+            }
+
+            ResumesViewModel model = new ResumesViewModel
+            {
+                Resumes = resumes.ToPagedList(pageNumber, pageSize),
+                Categories = categories,
+                EmployerId = employerId
+            };
+
+            return View(model);
+        }
     }
 }
