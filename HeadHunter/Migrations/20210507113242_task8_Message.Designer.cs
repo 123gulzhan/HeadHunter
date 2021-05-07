@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunter.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20210507110141_Task7_PokazVacanc_seed2NewCateg")]
-    partial class Task7_PokazVacanc_seed2NewCateg
+    [Migration("20210507113242_task8_Message")]
+    partial class task8_Message
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -70,6 +70,9 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("MessageContent")
+                        .HasColumnType("text");
+
                     b.Property<string>("RespondId")
                         .HasColumnType("text");
 
@@ -77,9 +80,6 @@ namespace HeadHunter.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserMessage")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

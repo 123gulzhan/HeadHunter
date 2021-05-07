@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunter.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20210507110141_Task7_PokazVacanc_seed2NewCateg")]
-    partial class Task7_PokazVacanc_seed2NewCateg
+    [Migration("20210507123703_task8_Message_edit")]
+    partial class task8_Message_edit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

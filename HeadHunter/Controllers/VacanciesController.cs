@@ -24,12 +24,17 @@ namespace HeadHunter.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index(VacancyViewModel model, string id)
         {
-            Vacancy vacancy = _db.Vacancies.FirstOrDefault(v => v.Id == id);
-            if (vacancy != null)
+            model = new VacancyViewModel
             {
-                return View(vacancy);
+                Resumes = _db.Resumes.ToList(),
+                Vacancy = _db.Vacancies.FirstOrDefault(v => v.Id == id)
+            };
+            
+            if (model.Vacancy != null)
+            {
+                return View(model);
             }
 
             return NotFound();

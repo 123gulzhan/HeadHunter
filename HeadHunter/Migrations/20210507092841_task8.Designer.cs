@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunter.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20210507110141_Task7_PokazVacanc_seed2NewCateg")]
-    partial class Task7_PokazVacanc_seed2NewCateg
+    [Migration("20210507092841_task8")]
+    partial class task8
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,32 +63,6 @@ namespace HeadHunter.Migrations
                     b.HasIndex("ResumeId");
 
                     b.ToTable("JobExperiences");
-                });
-
-            modelBuilder.Entity("HeadHunter.Models.Message", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RespondId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("SendDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserMessage")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RespondId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("HeadHunter.Models.Qualification", b =>
@@ -438,21 +412,6 @@ namespace HeadHunter.Migrations
                     b.Navigation("Resume");
                 });
 
-            modelBuilder.Entity("HeadHunter.Models.Message", b =>
-                {
-                    b.HasOne("HeadHunter.Models.Respond", "Respond")
-                        .WithMany("Messages")
-                        .HasForeignKey("RespondId");
-
-                    b.HasOne("HeadHunter.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Respond");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("HeadHunter.Models.Qualification", b =>
                 {
                     b.HasOne("HeadHunter.Models.Resume", "Resume")
@@ -556,11 +515,6 @@ namespace HeadHunter.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HeadHunter.Models.Respond", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("HeadHunter.Models.Resume", b =>

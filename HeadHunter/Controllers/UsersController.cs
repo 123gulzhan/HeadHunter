@@ -59,8 +59,7 @@ namespace HeadHunter.Controllers
                 return NotFound();
             }
 
-            List<Respond> responds = _db.Responds.Include(r => r.Vacancy).ThenInclude(r=>r.Employer)
-                .Include(r => r.Resume).ToList();
+            List<Respond> responds = _db.Responds.ToList();
 
             EmployerViewModel model = new EmployerViewModel
             {

@@ -1,0 +1,83 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model HeadHunter.Models.Respond?
+@inject UserManager<User> UserManager
+
+@{
+    ViewBag.Title = "Отклик";
+    Layout = "_Layout";
+}
+
+
+<h4>Обсуждение вакансии @Model.Vacancy.Name</h4>
+<div class="container">
+    <div class="chat" id="respondChat">
+        @foreach (var messages in @Model.Messages)
+        {
+            <div class="message-block">
+                <div class="d-flex flex-row">
+                    <div class="message-author">
+                        <div class="message-avatar">
+                            <img class="avatar-image" width="100px" height="80px" src="@messages.User.AvatarPath" alt="avatar">
+                        </div>
+                        <h6 class="name">@messages.User.UserName</h6>
+                        <input type="hidden" class="message-id" id="message-id" value="@messages.Id">
+                        <input type="hidden" class="respond-id" id="respond-id" value="@messages.Respond.Id">
+                    </div>
+                    <div class="message-body align-top">
+                        <p class="mb-1">@messages.SendDate.ToShortDateString()</p>
+                        <p class="mb-0">@messages.UserMessage</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <form action="#" id="#formData" class="form-group">
+        <textarea id="messageAnswer" rows="2" cols="25" placeholder="Введите сообщение"></textarea>
+        <input type="hidden" id="userId" value="@UserManager.GetUserId(User)">
+        <input type="hidden" id="respondId" value="@Model.Id">
+        <div class="send-message">
+            <button type="submit" id="done" class="btn btn-outline-primary">Отправить</button>    
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    <script >
+         $('#done').click(function(event) { 
+                event.preventDefault();
+                var userId = $('#userId').val();
+                var message = $('#messageAnswer').val();
+                var respondId = $('#respondId').val();
+                $.ajax({
+                    url : '@Url.Action("AddMessage", "Responds")',
+                    type : 'POST',
+                    data : {
+                        'userId' : userId,
+                        'message' : message,
+                        'respondId' : respondId                 
+                    },
+                    success : function(response){
+                        console.log(response);
+                        var data = "";
+                        for (var i = 0; i < response.length; i++){
+                             data = data + '<div class="message-block"><div class="d-flex flex-row-reverse"><div class="message-author">' +
+                                                                                   '<div class="message-avatar"><img class="avatar-image" width="100px" height="80px" src="../' + response[i].user.avatarPath +'" alt=""></div>' +
+                                                                                   '<h5 class="name">' + response[i].user.userName + '</h5></a><input type="hidden" class="message-id" id="message-id" value="' + response[i].id + '">' +
+                                                                                   '</div><div class="message-body align-top"><p class="mb-1">' + response[i].sendDate +'</p><p class="mb-0">' +response[i].userMessage +'</p>' +
+                                                                                   '</div></div>'
+                                        }
+                        $("#respondChat").append(data);
+                        reset();
+                        var block = document.getElementById('respondChat');
+                        block.scrollTop = block.scrollHeight;
+                    }                  
+                })  
+                     
+            });
+    
+            var reset = function () {
+                $('#messageAnswer').val('');
+            }; 
+    </script>
+}
