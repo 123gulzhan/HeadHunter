@@ -41,6 +41,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "employer")]
         public IActionResult Create()
         {
             CreateVacancyViewModel model = new CreateVacancyViewModel
@@ -51,6 +52,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "employer")]
         public async Task<IActionResult> Create(CreateVacancyViewModel model)
         {
             if (ModelState.IsValid)
@@ -79,6 +81,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "employer")]
         public IActionResult Edit(string id)
         {
             if (id != null)
@@ -107,6 +110,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "employer")]
         public async Task<IActionResult> Edit(EditVacancyViewModel model)
         {
             Vacancy vacancy = _db.Vacancies.FirstOrDefault(v => v.Id == model.Id);
@@ -133,6 +137,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "employer")]
         public IActionResult Update(string id)
         {
             if (id != null)
@@ -151,6 +156,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "employer")]
         public IActionResult PublicationVacancy(string id)
         {
             if (id != null)
@@ -169,6 +175,7 @@ namespace HeadHunter.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = "employer")]
         public IActionResult UnpublicationVacancy(string id)
         {
             if (id != null)

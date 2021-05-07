@@ -67,5 +67,6 @@ namespace HeadHunter.Controllers
             messages[0].User = _db.Users.FirstOrDefault(u => u.Id == userId);
             return Json(messages);
         }
+        
     }
 }
