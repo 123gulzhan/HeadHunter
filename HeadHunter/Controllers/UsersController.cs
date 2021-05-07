@@ -52,7 +52,7 @@ namespace HeadHunter.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> EmployerProfile(string userId)
+        public async Task<IActionResult> EmployerProfile(string userId, string vacancyId)
         {
             User user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -68,7 +68,7 @@ namespace HeadHunter.Controllers
                 Vacancies = _db.Vacancies.Where(v => v.EmployerId == userId).ToList(),
                 Responds = responds
             };
-
+            ViewBag.VacancyId = vacancyId;
             return View(model);
         }
     }

@@ -21,11 +21,11 @@
         <div class="d-flex">
             <h5 class="mr-3">Основная информация</h5> 
             @if (@Model.User.Id == UserManager.GetUserId(User))
-                {
-                    <a class="text-primary font-italic" type="button" data-toggle="modal" data-target="#editForm">
-                        Редактировать
-                    </a>
-                }
+            {
+                <a class="text-primary font-italic" type="button" data-toggle="modal" data-target="#editForm">
+                    Редактировать
+                </a>
+            }
         </div>
         <div id="user-name-main">
             <p><small class="text-secondary font-italic mr-2">Имя: </small>@Model.User.UserName</p>
@@ -104,84 +104,83 @@
                                 <small class="font-italic text-secondary">@(resume.DateOfUpdate == null 
                                                                               ? @updateNot : string.Concat(@updateDate,
                                                                                   @resume.DateOfUpdate.Value.Date.ToShortDateString()))</small>
-                                </p>
+                            </p>
                         </div>
                     </div>
                 }
             }
         }
     </div>
-      <div class="d-flex justify-content-start align-items-baseline">
-                <h5 class="m-3 pb-3">Ваши отклики</h5>
+    @if (Model.User.Id == UserManager.GetUserId(User))
+    {
+        <div class="d-flex justify-content-start align-items-baseline">
+            <h5 class="m-3 pb-3">Ваши отклики</h5>
+        </div>
+        @if (Model.Responds.Count == 0)
+        {
+            <div class="note">
+                <p class="text-secondary font-italic">Вы не сделали ни одного отклика</p>
             </div>
-                @if (Model.Responds.Count == 0)
+        }
+        <div class="respond-block d-flex justify-content-around">
+            @if (Model.Responds.Count != 0)
+            {
+                @foreach (var respond in Model.Responds)
                 {
-                    <div class="note">
-                        <p class="text-secondary font-italic">Вы не сделали ни одного отклика</p>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <a asp-controller="Responds" asp-action="Index" asp-route-respondId="@respond.Id">
+                                <h5 class="card-subtitle mb-2 text-muted">@respond.Vacancy.Name</h5>
+                            </a>
+                            <p class="card-text mt-3"><small class="font-italic text-secondary">Дата отклика:
+                                @if (@respond.DateOfRespond != null)
+                                {
+                                    @respond.DateOfRespond.ToShortDateString()
+                                }
+                            </small></p>
+                        </div>
                     </div>
                 }
-            <div class="respond-block d-flex justify-content-around">
-                @if (Model.Responds.Count != 0)
-                {
-                    @foreach (var respond in Model.Responds)
-                    {
-                         <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <a asp-controller="Responds" asp-action="Index" asp-route-respondId="@respond.Id">
-                                    <h5 class="card-subtitle mb-2 text-muted">@respond.Vacancy.Name</h5>
-                                </a>
-                                <p class="card-text mt-3"><small class="font-italic text-secondary">Дата отклика:
-                                    @if (@respond.DateOfRespond != null)
-                                    {
-                                        @respond.DateOfRespond.ToShortDateString()
-                                    }
-                                </small></p>
+            }
+        </div>
+        <div class="modal fade" id="editForm">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-uppercase" id="editModalLabel">Редактирование</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form">
+                            <div class="form-group">
+                                <label for="usernameInput">Имя </label>
+                                <input type="text" class="form-control" id="username" placeholder="@Model.User.UserName">
                             </div>
+                            <div class="form-group">
+                                <label for="phoneInput">Телефон</label>
+                                <input type="text" class="form-control" id="phone" placeholder="@Model.User.PhoneNumber">
+                            </div>
+                            <div class="form-group">
+                                <label for="avatarFile">Аватар</label>
+                                <input type="file" class="form-control" id="avatar">
+                            </div>
+                            <input type="hidden" id="userId" value="@Model.User.Id">
+                            <button type="button"
+                                    class="btn btn-outline-primary" id="done" onclick="EditAjax()">Изменить</button>
+                        </form>
+                        <div class="modal-body register-succes" id="succes">
+                            <h4>Изменено!</h4>
+                            <i class="check-custom fas fa-check"></i>
                         </div>
-                    }
-                }
-            </div>
-    
-    
-    
-    <div class="modal fade" id="editForm">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-uppercase" id="editModalLabel">Редактирование</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form">
-                        <div class="form-group">
-                            <label for="usernameInput">Имя </label>
-                            <input type="text" class="form-control" id="username" placeholder="@Model.User.UserName">
-                        </div>
-                        <div class="form-group">
-                            <label for="phoneInput">Телефон</label>
-                            <input type="text" class="form-control" id="phone" placeholder="@Model.User.PhoneNumber">
-                        </div>
-                        <div class="form-group">
-                            <label for="avatarFile">Аватар</label>
-                            <input type="file" class="form-control" id="avatar">
-                        </div>
-                        <input type="hidden" id="userId" value="@Model.User.Id">
-                        <button type="button"
-                                class="btn btn-outline-primary" id="done" onclick="EditAjax()">Изменить</button>
-                    </form>
-                    <div class="modal-body register-succes" id="succes">
-                        <h4>Изменено!</h4>
-                        <i class="check-custom fas fa-check"></i>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
-
-
+    
 @section Scripts
 {
 <script >

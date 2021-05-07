@@ -115,15 +115,14 @@
         @if (UserManager.GetUserId(User) == @Model.User.Id)
         {
             <div class="d-flex justify-content-start align-items-baseline">
-            <h5 class="m-3 pb-3">Отклики на ваши вакансии</h5>
-        </div>
-        @if (Model.Responds.Count == 0)
-        {
-            <div class="note">
-                <p class="text-secondary font-italic">На ваши вакансии еще нет откликов</p>
+                <h5 class="m-3 pb-3">Отклики на ваши вакансии</h5>
             </div>
-        }
-        
+            @if (Model.Responds.Count == 0)
+            {
+                <div class="note">
+                    <p class="text-secondary font-italic">На ваши вакансии еще нет откликов</p>
+                </div>
+            }
             <div class="respond-block d-flex justify-content-around">
                 @if (Model.Responds.Count != 0)
                 {
@@ -151,43 +150,44 @@
                     }
                 }
             </div>
-        }
-    </div>
-    <div class="modal fade" id="editForm">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-uppercase" id="editModalLabel">Редактирование</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form">
-                        <div class="form-group">
-                            <label for="usernameInput">Название компании</label>
-                            <input type="text" class="form-control" id="username" placeholder="@Model.User.UserName">
+            <div class="modal fade" id="editForm">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-uppercase" id="editModalLabel">Редактирование</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="phoneInput">Телефон</label>
-                            <input type="text" class="form-control" id="phone" placeholder="@Model.User.PhoneNumber">
+                        <div class="modal-body">
+                            <form id="form">
+                                <div class="form-group">
+                                    <label for="usernameInput">Название компании</label>
+                                    <input type="text" class="form-control" id="username" placeholder="@Model.User.UserName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneInput">Телефон</label>
+                                    <input type="text" class="form-control" id="phone" placeholder="@Model.User.PhoneNumber">
+                                </div>
+                                <div class="form-group">
+                                    <label for="avatarFile">Аватар</label>
+                                    <input type="file" class="form-control" id="avatar">
+                                </div>
+                                <input type="hidden" id="userId" value="@Model.User.Id">
+                                <button type="button"
+                                        class="btn btn-outline-primary" id="done" onclick="EditAjax()">Изменить</button>
+                            </form>
+                            <div class="modal-body register-succes" id="succes">
+                                <h4>Изменено!</h4>
+                                <i class="check-custom fas fa-check"></i>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="avatarFile">Аватар</label>
-                            <input type="file" class="form-control" id="avatar">
-                        </div>
-                        <input type="hidden" id="userId" value="@Model.User.Id">
-                        <button type="button"
-                                class="btn btn-outline-primary" id="done" onclick="EditAjax()">Изменить</button>
-                    </form>
-                    <div class="modal-body register-succes" id="succes">
-                        <h4>Изменено!</h4>
-                        <i class="check-custom fas fa-check"></i>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
+
 </div>
 
 
