@@ -1,8 +1,29 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Добро пожаловать на HeadHunter</h1>
+    <h6>Сервис по поиску и предложению работы</h6>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("applicant"))
+        {
+            <a asp-action="ApplicantProfile" asp-controller="Users" asp-route-userId="@UserManager.GetUserId(User)">Личный кабинет</a>
+        }
+        if (User.IsInRole("employer"))
+        {
+            <a asp-action="EmployerProfile" asp-controller="Users" asp-route-userId="@UserManager.GetUserId(User)">Личный кабинет</a>
+        }
+    }
+    else
+    {
+        <p>
+            Для использования приложения <a asp-action="Register" asp-controller="Account">Зарегистрируйтесь</a> или 
+            <a asp-action="Login" asp-controller="Account">Залогиньтесь</a>
+        </p>
+    }
 </div>

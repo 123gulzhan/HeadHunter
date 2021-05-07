@@ -92,6 +92,10 @@ body {
   text-align: center;
 }
 
+.head-logo{
+  width: 100px;
+}
+
 
 .footer {
   position: absolute;
