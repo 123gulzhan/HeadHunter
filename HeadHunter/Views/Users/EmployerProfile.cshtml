@@ -58,7 +58,14 @@
                         </div>
                         <div class="card-body text-secondary text-center">
                             <p class="card-text">Зарплата - @vacancy.Salary</p>
-                            <p class="card-text"><small class="font-italic text-secondary">Дата обновления: @vacancy.DateOfUpdate.Value.Date.ToShortDateString()</small></p>
+                            @if (@vacancy.DateOfUpdate != null)
+                            {
+                                <p class="card-text"><small class="font-italic text-secondary">Дата обновления: @vacancy.DateOfUpdate.Value.Date.ToShortDateString()</small></p>
+                            }
+                            @if (@vacancy.DateOfUpdate == null)
+                            {
+                                <p class="card-text"><small class="font-italic text-secondary">Дата обновления: Не обновлялось</small></p>
+                            }
                         </div>
                         <div class="card-footer bg-transparent border-secondary text-center">
                             <a class="btn btn-outline-primary" asp-action="Update" asp-controller="Vacancies" asp-route-id="@vacancy.Id">Обновить</a>

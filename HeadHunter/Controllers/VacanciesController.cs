@@ -68,7 +68,7 @@ namespace HeadHunter.Controllers
                 if (result.IsCompleted)
                 {
                     await _db.SaveChangesAsync();
-                    return RedirectToAction("EmployerProfile", "Users", new{id = model.EmployerId});
+                    return RedirectToAction("EmployerProfile", "Users", new{userId = model.EmployerId});
                 }
             }
 
