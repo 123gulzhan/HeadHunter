@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HeadHunter.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Task7_PokazVacanc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -171,11 +171,9 @@ namespace HeadHunter.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
+                    PositionName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     Salary = table.Column<decimal>(type: "numeric", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: true),
                     Telegram = table.Column<string>(type: "text", nullable: true),
-                    Phone = table.Column<string>(type: "text", nullable: true),
                     Facebook = table.Column<string>(type: "text", nullable: true),
                     LinkedIn = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
@@ -212,6 +210,7 @@ namespace HeadHunter.Migrations
                     Experience = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     DateOfPublication = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    DateOfUpdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     EmployerId = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<string>(type: "text", nullable: true)
                 },

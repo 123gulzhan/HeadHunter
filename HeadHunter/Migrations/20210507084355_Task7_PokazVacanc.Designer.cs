@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HeadHunter.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20210505174024_Vacancy")]
-    partial class Vacancy
+    [Migration("20210507084355_Task7_PokazVacanc")]
+    partial class Task7_PokazVacanc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -136,20 +136,16 @@ namespace HeadHunter.Migrations
                     b.Property<DateTime?>("DateOfUpdate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
                     b.Property<string>("Facebook")
                         .HasColumnType("text");
 
                     b.Property<string>("LinkedIn")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("text");
+                    b.Property<string>("PositionName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("numeric");

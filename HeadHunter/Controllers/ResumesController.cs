@@ -32,7 +32,6 @@ namespace HeadHunter.Controllers
             {
                 return View(resume);
             }
-
             return NotFound();
         }
 
@@ -195,7 +194,7 @@ namespace HeadHunter.Controllers
                 resumes = (IOrderedQueryable<Resume>) resumes.Where(r => r.PositionName.Contains(positionPart));
             }
 
-            ResumesViewModel model = new ResumesViewModel
+            AllResumesViewModel model = new AllResumesViewModel
             {
                 Resumes = resumes.ToPagedList(pageNumber, pageSize),
                 Categories = categories,

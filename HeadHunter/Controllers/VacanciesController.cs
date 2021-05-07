@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HeadHunter.Enums;
 using HeadHunter.Models;
 using HeadHunter.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace HeadHunter.Controllers
 {
@@ -177,5 +180,38 @@ namespace HeadHunter.Controllers
             }
             return NotFound();
         }
+
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetVacancies(string applicantId, string categoryId, string positionPart, int? page)
+        {
+            int pageSize = 2; //20 - сколько элементов будет на странице отображаться
+            int pageNumber = page ?? 1;
+
+            var vacancies = _db.Vacancies.OrderByDescending(r => r.DateOfUpdate);
+
+            IEnumerable<Category> categories = _db.Categories;
+
+            if (categoryId != null)
+            {
+                vacancies = (IOrderedQueryable<Vacancy>)vacancies.Where(r => r.CategoryId == categoryId);
+            }
+
+            if (positionPart != null)
+            {
+                vacancies = (IOrderedQueryable<Vacancy>)vacancies.Where(r => r.Name.Contains(positionPart));
+            }
+
+            AllVacanciesViewModel model = new AllVacanciesViewModel()
+            {
+                Vacancies = vacancies.ToPagedList(pageNumber, pageSize),
+                Categories = categories,
+                ApplicantId = applicantId
+            };
+
+            return View(model);
+        }
+        
     }
 }

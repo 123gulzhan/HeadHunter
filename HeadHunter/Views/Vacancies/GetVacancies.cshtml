@@ -1,19 +1,18 @@
-﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
-@using System.ComponentModel
-@using X.PagedList.Mvc.Bootstrap4.Core
+﻿@using X.PagedList.Mvc.Bootstrap4.Core
 @using X.PagedList.Mvc.Core
-@model HeadHunter.ViewModels.AllResumesViewModel
+@model HeadHunter.ViewModels.AllVacanciesViewModel
 
 @{
-    ViewBag.Title = "Публичные резюме";
+    ViewBag.Title = "title";
     Layout = "_Layout";
 }
+
+<h2>title</h2>
 
 <h4>@ViewBag.Title</h4>
 <div class="container">
     <form method="get" class="mt-3 mb-5" style="border: 1px dotted lightslategrey; border-radius: 8px;">
         <div class="form-inline form-group">
-        
             <div class="m-3">
                 <label class="control-label">Категория: </label>
                 @if (Model.Categories.Any())
@@ -27,7 +26,7 @@
                 }
             </div>
             <div class="m-3">
-                <label class="control-label">Название резюме (частично):</label>
+                <label class="control-label">Название вакансии (частично):</label>
                 @Html.TextBox("positionPart", Model.Position, new {@class = "form-control"})
             </div>
             <div class="my-auto pt-3">
@@ -35,48 +34,48 @@
             </div>
         </div>
     </form>
-    @if (Model.Resumes.Any())
+    @if (Model.Vacancies.Any())
     {
-        @foreach (var resume in @Model.Resumes)
+        @foreach (var vacancy in @Model.Vacancies)
         {
             <div class="card text-center mb-4">
                 <div class="card-header p-1">
                     <small>
-                        <a asp-controller="Users" asp-action="ApplicantProfile" asp-route-userId="@resume.ApplicantId"
-                           asp-route-resumeId="@resume.Id" class="btn-sm btn-outline-primary">
-                            Перейти к профилю соискателя
+                        <a asp-controller="Users" asp-action="ApplicantProfile" asp-route-userId="@vacancy.EmployerId"
+                           asp-route-resumeId="@vacancy.Id" class="btn-sm btn-outline-primary">
+                            Перейти к профилю работодателя
                         </a>
                     </small>
                 </div>
                 <div class="card-body">
-                    <a asp-controller="Resumes" asp-action="Index" asp-route-resumeId="@resume.Id">
+                    <a asp-controller="Vacancies" asp-action="Index" asp-route-resumeId="@vacancy.Id">
                         <h5 class="card-title">
-                            @resume.PositionName
+                            @vacancy.Name
                         </h5>
                     </a>
-                    @if (@resume.Salary != 0)
+                    @if (@vacancy.Salary != 0)
                     {
-                        <p class="card-text p-1">Ожидаемая зарплата - @resume.Salary тенге</p>
+                        <p class="card-text p-1">Зарплата - @vacancy.Salary тенге</p>
                     }
                     else
                     {
-                        <p class="card-text p-1">Ожидаемая зарплата - не указано</p>
+                        <p class="card-text p-1">Зарплата - не указано</p>
                     }
                 </div>
                 <div class="card-footer text-muted p-1">
-                    Дата публикации: @resume.DateOfPublication.Value.Date.ToShortDateString()
+                    Дата публикации: @vacancy.DateOfPublication.Value.Date.ToShortDateString()
                 </div>
             </div>
         }
-        <p class="my-3">Страница @(Model.Resumes.PageCount < Model.Resumes.PageNumber ? 0 : Model.Resumes.PageNumber) из @Model.Resumes.PageCount</p>
+        <p class="my-3">Страница @(Model.Vacancies.PageCount < Model.Vacancies.PageNumber ? 0 : Model.Vacancies.PageNumber) из @Model.Vacancies.PageCount</p>
         
         <div class="row justify-content-center">
-            @Html.PagedListPager(Model.Resumes, page => Url.Action("GetResumes", "Resumes", 
+            @Html.PagedListPager(Model.Vacancies, page => Url.Action("GetVacancies", "Vacancies", 
                 new {page}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast);
         </div>
     }
     else
     {
-        <p>Публичных резюме пока нет</p>
+        <p>Публичных вакансий пока нет</p>
     }
 </div>
