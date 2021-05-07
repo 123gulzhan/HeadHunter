@@ -51,7 +51,7 @@ namespace HeadHunter.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "employer")]
+        [Authorize]
         public async Task<IActionResult> EmployerProfile(string userId)
         {
             User user = await _userManager.FindByIdAsync(userId);
