@@ -159,6 +159,7 @@ namespace HeadHunter.Controllers
                 if (vacancy != null)
                 {
                     vacancy.Status = Status.Публичное;
+                    vacancy.DateOfPublication = DateTime.Now;
                     _db.Vacancies.Update(vacancy);
                     _db.SaveChanges();
                     return RedirectToAction("EmployerProfile", "Users", new {userId = vacancy.EmployerId});
@@ -176,6 +177,7 @@ namespace HeadHunter.Controllers
                 if (vacancy != null)
                 {
                     vacancy.Status = Status.Неопубликованное;
+                    vacancy.DateOfPublication = null;
                     _db.Vacancies.Update(vacancy);
                     _db.SaveChanges();
                     return RedirectToAction("EmployerProfile", "Users", new {userId = vacancy.EmployerId});
