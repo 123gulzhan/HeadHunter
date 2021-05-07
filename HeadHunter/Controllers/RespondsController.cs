@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using HeadHunter.Models;
 using Microsoft.AspNetCore.Identity;
@@ -19,9 +20,20 @@ namespace HeadHunter.Controllers
 
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string respondId)
         {
-            return View();
+            if (respondId != null)
+            {
+                var respond = _db.Responds.FirstOrDefault(r => r.Id == respondId);
+                if (respond != null 
+                    && _userManager.GetUserId(User) == respond.Resume.ApplicantId 
+                    || _userManager.GetUserId(User) == respond.Vacancy.EmployerId)
+                {
+                    return View(respond);
+                }
+                return NotFound();
+            }
+            return NotFound();
         }
         
         [HttpGet]
@@ -39,7 +51,21 @@ namespace HeadHunter.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-        
 
+        public IActionResult AddMessage(string userId, string message, string respondId)
+        {
+            _db.Messages.Add(new Message
+            {
+                UserId = userId,
+                UserMessage = message,
+                RespondId = respondId
+            });
+            _db.SaveChanges();
+            
+            List<Message> messages = _db.Messages.Where(m => m.UserId == userId).ToList();
+            messages = messages.TakeLast(1).ToList();
+            messages[0].User = _db.Users.FirstOrDefault(u => u.Id == userId);
+            return Json(messages);
+        }
     }
 }

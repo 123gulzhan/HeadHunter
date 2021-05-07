@@ -14,6 +14,7 @@ namespace HeadHunter.Models
         public DbSet<Respond> Responds { get; set; }
         public DbSet<JobExperience> JobExperiences { get; set; }
         public DbSet<Qualification> Qualifications { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public HeadHunterContext(DbContextOptions options) : base(options)
         {

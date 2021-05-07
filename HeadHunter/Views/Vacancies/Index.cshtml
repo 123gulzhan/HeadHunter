@@ -16,7 +16,7 @@
         <p>Категория: @Model.Vacancy.Category.Name</p>
         @if (User.Identity.IsAuthenticated && User.IsInRole("applicant"))
         {
-            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#respondForm"></button>
+            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#respondForm">Откликнуться</button>
         }
         <hr>
         <table>
@@ -44,11 +44,11 @@
             <p>Вакансия не обновлялась</p>
         }
       
-        <div class="modal fade" id="editForm">
+        <div class="modal fade" id="respondForm">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-uppercase" id="editModalLabel">Редактирование</h5>
+                        <h5 class="modal-title text-uppercase" id="editModalLabel">Отклик</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -62,7 +62,7 @@
                                     <select asp-for="Respond.ResumeId" id="resumeId">
                                         @foreach (var resume in @Model.Resumes.Where(r => r.ApplicantId == UserManager.GetUserId(User)))
                                         {
-                                            <option value="@resume.Id">@resume.PositionName></option>
+                                            <option value="@resume.Id">@resume.PositionName</option>
                                         }
                                     </select>
                                 }
