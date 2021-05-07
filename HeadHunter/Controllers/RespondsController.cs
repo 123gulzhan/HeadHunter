@@ -25,7 +25,7 @@ namespace HeadHunter.Controllers
         }
         
         [HttpGet]
-        public IActionResult Create(string resumeId, string vacancyId)
+        public IActionResult CreateAjax(string resumeId, string vacancyId)
         {
             Respond respond = new Respond
             {
