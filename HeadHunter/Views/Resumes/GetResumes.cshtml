@@ -7,6 +7,9 @@
 @{
     ViewBag.Title = "Резюме соискателей";
     Layout = "_Layout";
+    var salary = "Ожидаемая зарплата ";
+    var salaryEmpty = "Ожидаемая зарплата не указана";
+    var tenge = " тенге";
 }
 
 <h4>@ViewBag.Title</h4>
@@ -29,7 +32,8 @@
             <div class="m-3">
                 <label class="control-label">Зарплата по </label>
                 <select asp-for="SalaryOrder" id="salaryOrder" name="salaryOrder" class="form-control">
-                    <option class="col-4" value="asc" selected>возрастанию</option>
+                    <option class="col-4" value="default" selected>умолчанию</option>
+                    <option class="col-4" value="asc">возрастанию</option>
                     <option class="col-4" value="desc">убыванию</option>
                 </select>
             </div>
@@ -61,14 +65,7 @@
                             @resume.PositionName
                         </h5>
                     </a>
-                    @if (@resume.Salary != 0)
-                    {
-                        <p class="card-text p-1">Ожидаемая зарплата - @resume.Salary тенге</p>
-                    }
-                    else
-                    {
-                        <p class="card-text p-1">Ожидаемая зарплата - не указано</p>
-                    }
+                    <p class="card-text p-1">@(resume.Salary == 0 ? @salaryEmpty : string.Concat(@salary, @resume.Salary, tenge))</p>
                 </div>
                 <div class="card-footer text-muted p-1">
                     @if (resume.DateOfPublication != null)

@@ -8,72 +8,75 @@
     Layout = "_Layout";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <h4 class="pr-4">@Model.Vacancy.Name</h4>
-        <h5>@Model.Vacancy.Salary</h5>
-        <h5>@Model.Vacancy.Employer.UserName</h5>
-        <p>Категория: @Model.Vacancy.Category.Name</p>
-        @if (User.Identity.IsAuthenticated && User.IsInRole("applicant"))
-        {
-            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#respondForm">Откликнуться</button>
-        }
-        <hr>
-        <table>
-            <tr>
-                <td>Требуемый опыт работы: @Model.Vacancy.Experience</td>
-            </tr>
-            <tr>
-                <td>Описание вакансии:</td>
-            </tr>
-            <tr>
-                <td>@Model.Vacancy.Description</td>
-            </tr>
-        </table>
-        <hr>
-        @if (@Model.Vacancy.Status == Status.Публичное)
-        {
-            <p>Вакансия опубликована @Model.Vacancy.DateOfPublication.Value.Date.ToShortDateString()</p>
-        }
-        @if (@Model.Vacancy.DateOfUpdate != null)
-        {
-            <p>Дата обновления вакансии @Model.Vacancy.DateOfUpdate.Value.Date.ToShortDateString()</p>
-        }
-        else
-        {
-            <p>Вакансия не обновлялась</p>
-        }
-      
-        <div class="modal fade" id="respondForm">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-uppercase" id="editModalLabel">Отклик</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="form">
-                            <div class="form-group">
-                                <label>Выбрать резюме</label>
-                                @if (@Model.Resumes.Count(r => r.ApplicantId == UserManager.GetUserId(User)) != 0)
-                                {
-                                    <select asp-for="Respond.ResumeId" id="resumeId">
-                                        @foreach (var resume in @Model.Resumes.Where(r => r.ApplicantId == UserManager.GetUserId(User)))
-                                        {
-                                            <option value="@resume.Id">@resume.PositionName</option>
-                                        }
-                                    </select>
-                                }
+<div class="container">
+    <h5 class="text-secondary">@ViewBag.Title</h5>
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="pr-4">@Model.Vacancy.Name</h4>
+            <h5>@Model.Vacancy.Salary</h5>
+            <h5>@Model.Vacancy.Employer.UserName</h5>
+            <p>Категория: @Model.Vacancy.Category.Name</p>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("applicant"))
+            {
+                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#respondForm">Откликнуться</button>
+            }
+            <hr>
+            <table>
+                <tr>
+                    <td>Требуемый опыт работы: @Model.Vacancy.Experience</td>
+                </tr>
+                <tr>
+                    <td>Описание вакансии:</td>
+                </tr>
+                <tr>
+                    <td>@Model.Vacancy.Description</td>
+                </tr>
+            </table>
+            <hr>
+            @if (@Model.Vacancy.Status == Status.Публичное)
+            {
+                <p>Вакансия опубликована @Model.Vacancy.DateOfPublication.Value.Date.ToShortDateString()</p>
+            }
+            @if (@Model.Vacancy.DateOfUpdate != null)
+            {
+                <p>Дата обновления вакансии @Model.Vacancy.DateOfUpdate.Value.Date.ToShortDateString()</p>
+            }
+            else
+            {
+                <p>Вакансия не обновлялась</p>
+            }
+
+            <div class="modal fade" id="respondForm">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-uppercase" id="editModalLabel">Отклик</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form">
+                                <div class="form-group">
+                                    <label>Выбрать резюме</label>
+                                    @if (@Model.Resumes.Count(r => r.ApplicantId == UserManager.GetUserId(User)) != 0)
+                                    {
+                                        <select asp-for="Respond.ResumeId" id="resumeId">
+                                            @foreach (var resume in @Model.Resumes.Where(r => r.ApplicantId == UserManager.GetUserId(User)))
+                                            {
+                                                <option value="@resume.Id">@resume.PositionName</option>
+                                            }
+                                        </select>
+                                    }
+                                </div>
+                                <input type="hidden" id="vacancyId" value="@Model.Vacancy.Id">
+                                <button type="button"
+                                        class="btn btn-outline-primary" id="done" onclick="CreateAjax()">Откликнуться</button>
+                            </form>
+                            <div class="modal-body register-succes" id="succes">
+                                <h4>Отправлено!</h4>
+                                <i class="check-custom fas fa-check"></i>
                             </div>
-                            <input type="hidden" id="vacancyId" value="@Model.Vacancy.Id">
-                            <button type="button"
-                                    class="btn btn-outline-primary" id="done" onclick="CreateAjax()">Откликнуться</button>
-                        </form>
-                        <div class="modal-body register-succes" id="succes">
-                            <h4>Отправлено!</h4>
-                            <i class="check-custom fas fa-check"></i>
                         </div>
                     </div>
                 </div>
@@ -81,7 +84,6 @@
         </div>
     </div>
 </div>
-
 @section Scripts
 {
     <script >

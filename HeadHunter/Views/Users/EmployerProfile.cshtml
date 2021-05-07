@@ -1,9 +1,13 @@
 ﻿@using HeadHunter.Enums
+@using Microsoft.AspNetCore.Identity
 @model HeadHunter.ViewModels.EmployerViewModel
+@inject UserManager<User> UserManager
 
 @{
     ViewBag.Title = "Личный кабинет";
     Layout = "_Layout";
+    var updateDate = "Дата обновления: ";
+    var updateNot = "Дата обновления: не обновлялась";
 }
 
 <div class="container">
@@ -16,7 +20,10 @@
     <div class="main-info mt-3 ml-3" id="mainInfo">
         <div class="d-flex">
             <h5 class="mr-3">Основная информация</h5>
-            <a class="text-primary font-italic" type="button" data-toggle="modal" data-target="#editForm">Редактировать</a>
+            @if (@Model.User.Id == UserManager.GetUserId(User))
+            {
+                <a class="text-primary font-italic" type="button" data-toggle="modal" data-target="#editForm">Редактировать</a>
+            }
         </div>
 
         <div id="user-name-main">
@@ -29,52 +36,82 @@
     <div class="vacancy-info ml-3 mt-3">
         <div class="d-flex">
             <h5 class="mr-3">Вакансии компании</h5>
-            <a asp-action="Create" asp-controller="Vacancies" class="text-primary font-italic">Создать вакансию</a>
+            @if (@Model.User.Id == UserManager.GetUserId(User))
+            {
+                <a asp-action="Create" asp-controller="Vacancies" class="text-primary font-italic">Создать вакансию</a>
+            }
         </div>
 
-        @if (@Model.Vacancies.Count == 0)
+        @if (@Model.Vacancies.Count == 0 && Model.User.Id == UserManager.GetUserId(User))
         {
             <div class="note">
                 <p class="text-secondary font-italic">Добавьте вакансии для отображения в списке</p>
             </div>
         }
         <div class="card-deck justify-content-center">
-            @foreach (var vacancy in Model.Vacancies)
+            @if (Model.Vacancies.Count != 0 && Model.User.Id == UserManager.GetUserId(User))
             {
-                <div class="card border-secondary mb-3" style="max-width: 18rem;">
-                    <div class="card-header bg-transparent border-secondary text-center">
-                        <h5>
-                            <a asp-action="Index" asp-controller="Vacancies" asp-route-id="@vacancy.Id" class="text-primary">@vacancy.Name</a>
-                        </h5>
-                        @if (@vacancy.Status == Status.Неопубликованное)
-                        {
-                            <a asp-action="PublicationVacancy" asp-controller="Vacancies" asp-route-id="@vacancy.Id" class="text-primary font-italic" >Опубликовать</a>
-                        }
-                        @if (@vacancy.Status == Status.Публичное)
-                        {
-                            <a asp-action="UnpublicationVacancy" asp-controller="Vacancies" asp-route-id="@vacancy.Id" class="text-primary font-italic">Снять с публикации</a>
-                        }
+                @foreach (var vacancy in Model.Vacancies)
+                {
+                    <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-transparent border-secondary text-center">
+                            <h5>
+                                <a asp-action="Index" asp-controller="Vacancies" asp-route-id="@vacancy.Id" 
+                                   class="text-primary">@vacancy.Name</a>
+                            </h5>
+                            @if (@vacancy.Status == Status.Неопубликованное)
+                            {
+                                <a asp-action="PublicationVacancy" asp-controller="Vacancies" asp-route-id="@vacancy.Id" 
+                                   class="text-primary font-italic">Опубликовать</a>
+                            }
+                            @if (@vacancy.Status == Status.Публичное)
+                            {
+                                <a asp-action="UnpublicationVacancy" asp-controller="Vacancies" asp-route-id="@vacancy.Id" 
+                                   class="text-primary font-italic">Снять с публикации</a>
+                            }
+                        </div>
+                        <div class="card-body text-secondary text-center">
+                            <p class="card-text">Зарплата - @vacancy.Salary</p>
+                            <small class="font-italic text-secondary">@(vacancy.DateOfUpdate == null
+                                                                          ? @updateNot : string.Concat(@updateDate,
+                                                                              @vacancy.DateOfUpdate.Value.Date.ToShortDateString()))</small>
+                        </div>
+                        <div class="card-footer bg-transparent border-secondary text-center">
+                            @if (Model.User.Id == UserManager.GetUserId(User))
+                            {
+                                <a class="btn btn-outline-primary" asp-action="Update" asp-controller="Vacancies" 
+                                   asp-route-id="@vacancy.Id">Обновить</a>
+                                <a class="btn btn-outline-primary" asp-action="Edit" asp-controller="Vacancies" 
+                                   asp-route-id="@vacancy.Id">Редактировать</a>
+                            }
+                        </div>
                     </div>
-                    <div class="card-body text-secondary text-center">
-                        <p class="card-text">Зарплата - @vacancy.Salary</p>
-                        @if (@vacancy.DateOfUpdate != null)
-                        {
-                            <p class="card-text"><small class="font-italic text-secondary">Дата обновления: @vacancy.DateOfUpdate.Value.Date.ToShortDateString()</small></p>
-                        }
-                        @if (@vacancy.DateOfUpdate == null)
-                        {
-                            <p class="card-text"><small class="font-italic text-secondary">Дата обновления: Не обновлялось</small></p>
-                        }
-                    </div>
-                    <div class="card-footer bg-transparent border-secondary text-center">
-                        <a class="btn btn-outline-primary" asp-action="Update" asp-controller="Vacancies" asp-route-id="@vacancy.Id">Обновить</a>
-                        <a class="btn btn-outline-primary" asp-action="Edit" asp-controller="Vacancies" asp-route-id="@vacancy.Id">Редактировать</a>
-                    </div>
-                </div>
+                }
+            }
+            @if (Model.Vacancies.Count != 0 && Model.User.Id != UserManager.GetUserId(User)
+                 && ViewBag.VacancyId != null)
+            {
+                @foreach (var vacancy in @Model.Vacancies)
+                {
+                    @if (@vacancy.Id == ViewBag.VacancyId && @vacancy.Status == Status.Публичное)
+                    {
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <a asp-controller="Vacancies" asp-action="Index" asp-route-Id="@vacancy.Id">
+                                    <h5 class="card-subtitle mb-2 text-muted">@vacancy.Name</h5>
+                                </a>
+                                <p class="card-text mt-3">
+                                    <small class="font-italic text-secondary">@(vacancy.DateOfUpdate == null 
+                                                                                  ? @updateNot : string.Concat(@updateDate,
+                                                                                      @vacancy.DateOfUpdate.Value.Date.ToShortDateString()))
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                    }
+                }
             }
         </div>
-
-
     </div>
     <div class="modal fade" id="editForm">
         <div class="modal-dialog" role="document">

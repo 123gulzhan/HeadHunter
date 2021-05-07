@@ -12,6 +12,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.4" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
+        <PackageReference Include="PdfSharpCore" Version="1.2.16" />
         <PackageReference Include="X.PagedList.Mvc.Bootstrap4" Version="8.0.7.1" />
         <PackageReference Include="X.PagedList.Mvc.Core" Version="8.0.7" />
     </ItemGroup>

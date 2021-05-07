@@ -6,6 +6,8 @@
 @{
     ViewBag.Title = "Личный кабинет";
     Layout = "_Layout";
+    var updateDate = "Дата обновления: ";
+    var updateNot = "Дата обновления: не обновлялась";
 }
 
 <div class="container">
@@ -20,7 +22,9 @@
             <h5 class="mr-3">Основная информация</h5> 
             @if (@Model.User.Id == UserManager.GetUserId(User))
                 {
-                    <a class="text-primary font-italic" type="button" data-toggle="modal" data-target="#editForm">Редактировать</a>
+                    <a class="text-primary font-italic" type="button" data-toggle="modal" data-target="#editForm">
+                        Редактировать
+                    </a>
                 }
         </div>
         <div id="user-name-main">
@@ -35,13 +39,15 @@
     @if (@Model.User.Id == UserManager.GetUserId(User))
     {
         <div class="d-flex justify-content-start align-items-baseline">
-            <h5 class="m-3 pb-3">Ваши резюме</h5> <a asp-controller="Resumes" asp-action="AddResume" class="font-italic">Создать резюме</a>
+            <h5 class="m-3 pb-3">Ваши резюме</h5> <a asp-controller="Resumes" asp-action="AddResume" 
+                                                     class="font-italic">Создать резюме</a>
         </div>   
     }
     @if (Model.Resumes.Count == 0 && @Model.User.Id == UserManager.GetUserId(User))
     {
         <div class="note">
-            <p class="text-secondary font-italic">Заполните информацию о себе, чтобы у вас получилось готовое для публикации резюме</p>
+            <p class="text-secondary font-italic">Заполните информацию о себе, чтобы у вас получилось готовое 
+                для публикации резюме</p>
         </div>
     }
     <div class="resume-block d-flex justify-content-around">
@@ -67,14 +73,9 @@
                             </form>
                         }
                         <p class="card-text mt-3">
-                            @if (@resume.DateOfUpdate != null)
-                            {
-                                <small class="font-italic text-secondary">Дата обновления: @resume.DateOfUpdate.Value.Date.ToShortDateString()</small>
-                            }
-                            else
-                            {
-                                <small class="font-italic text-secondary">Дата обновления: Не обновлялось</small>
-                            }
+                            <small class="font-italic text-secondary">@(resume.DateOfUpdate == null 
+                                                                          ? @updateNot : string.Concat(@updateDate,
+                                                                              @resume.DateOfUpdate.Value.Date.ToShortDateString()))</small>
                         </p>
                         <p class="d-flex justify-content-between">
                             <a asp-controller="Resumes" asp-action="Update" asp-route-id="@resume.Id" type="submit">
@@ -100,14 +101,9 @@
                                 <h5 class="card-subtitle mb-2 text-muted">@resume.PositionName</h5>
                             </a>
                             <p class="card-text mt-3">
-                            @if (@resume.DateOfUpdate != null)
-                                    {
-                                        <small class="font-italic text-secondary">Дата обновления: @resume.DateOfUpdate.Value.Date.ToShortDateString()</small>
-                                    }
-                                    else
-                                    {
-                                        <small class="font-italic text-secondary">Дата обновления: Не обновлялось</small>
-                                    }
+                                <small class="font-italic text-secondary">@(resume.DateOfUpdate == null 
+                                                                              ? @updateNot : string.Concat(@updateDate,
+                                                                                  @resume.DateOfUpdate.Value.Date.ToShortDateString()))</small>
                                 </p>
                         </div>
                     </div>
@@ -204,19 +200,17 @@
                    'phone' : phone,
                    'avatar' : avatar
                },
-               success : function (data){
-                   $('#user-name').html(data.userName);
-                   $('#user-name-main').html('<p>' + data.userName + '</p>');
-                   $('#user-phone').html('<p>' + data.phoneNumber + '</p>');
-                   $('#user-avatar').text(data.avatarPath);
+               success : function (data){                   
+                        $('#user-name').html(data.userName);
+                        $('#user-name-main').html('<p><small class="text-secondary font-italic mr-2">Имя: </small>' + data.userName + '</p>');
+                        $('#user-phone').html('<p><small class="text-secondary font-italic mr-2">Телефон: </small>' + data.phoneNumber + '</p>');
+                        $('#user-avatar').text(data.avatarPath);
                    console.log(data);
                    console.log(data.avatarPath);
                }
             });
             $('#form').hide();
-            $('#succes').show();
-            
-        }
-        
+            $('#succes').show();            
+        }        
     </script>
 }
