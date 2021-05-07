@@ -31,6 +31,7 @@ else
             @if (ViewBag.Categories.Count != null)
             {
                 <select asp-for="CategoryId">
+                    <span asp-validation-for="CategoryId"></span><br>
                     @foreach (var cat in ViewBag.Categories)
                     {
                         <option class="col-4" value="@cat.Id">@cat.Name</option>

@@ -12,5 +12,6 @@ namespace HeadHunter.ViewModels
         public string Position { get; set; }
         public string CategoryId { get; set; }
         public string ApplicantId { get; set; }
+        public string SalaryOrder { get; set; }
     }
 }

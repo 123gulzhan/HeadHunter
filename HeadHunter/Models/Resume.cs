@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HeadHunter.Enums;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HeadHunter.Models
 {
@@ -23,6 +24,7 @@ namespace HeadHunter.Models
         public string ApplicantId { get; set; }
         public virtual User Applicant { get; set; }
 
+        [Remote("CheckCategory", "Validation", ErrorMessage = "Выберите категорию")]
         public string CategoryId { get; set; }
         public virtual Category Category { get; set; }
 

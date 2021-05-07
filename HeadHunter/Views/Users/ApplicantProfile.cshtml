@@ -100,8 +100,7 @@
                                 <h5 class="card-subtitle mb-2 text-muted">@resume.PositionName</h5>
                             </a>
                             <p class="card-text mt-3">
-                                <small class="font-italic text-secondary">Дата обновления:
-                                    @if (@resume.DateOfUpdate != null)
+                            @if (@resume.DateOfUpdate != null)
                                     {
                                         <small class="font-italic text-secondary">Дата обновления: @resume.DateOfUpdate.Value.Date.ToShortDateString()</small>
                                     }
@@ -109,7 +108,7 @@
                                     {
                                         <small class="font-italic text-secondary">Дата обновления: Не обновлялось</small>
                                     }
-                                </small></p>
+                                </p>
                         </div>
                     </div>
                 }

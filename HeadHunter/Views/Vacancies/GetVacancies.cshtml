@@ -1,13 +1,13 @@
-﻿@using X.PagedList.Mvc.Bootstrap4.Core
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using System.ComponentModel
+@using X.PagedList.Mvc.Bootstrap4.Core
 @using X.PagedList.Mvc.Core
 @model HeadHunter.ViewModels.AllVacanciesViewModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Вакансии работодателей";
     Layout = "_Layout";
 }
-
-<h2>title</h2>
 
 <h4>@ViewBag.Title</h4>
 <div class="container">
@@ -26,11 +26,18 @@
                 }
             </div>
             <div class="m-3">
-                <label class="control-label">Название вакансии (частично):</label>
-                @Html.TextBox("positionPart", Model.Position, new {@class = "form-control"})
+                <label class="control-label">Зарплата по </label>
+                <select asp-for="SalaryOrder" id="salaryOrder" name="salaryOrder" class="form-control">
+                    <option class="col-4" value="asc" selected>возрастанию</option>
+                    <option class="col-4" value="desc">убыванию</option>
+                </select>
+            </div>
+            <div class="m-3">
+                <label class="control-label">По названию резюме </label>
+                @Html.TextBox("positionPart", Model.Position, new {@class = "form-control", @placeholder = "полностью или частично"})
             </div>
             <div class="my-auto pt-3">
-                <input type="submit" class="btn-sm btn-outline-primary" value="Фильтр">
+                <input type="submit" class="btn-sm btn-outline-primary" value="Найти по заданным параметрам">
             </div>
         </div>
     </form>
@@ -41,14 +48,14 @@
             <div class="card text-center mb-4">
                 <div class="card-header p-1">
                     <small>
-                        <a asp-controller="Users" asp-action="ApplicantProfile" asp-route-userId="@vacancy.EmployerId"
+                        <a asp-controller="Users" asp-action="EmployerProfile" asp-route-userId="@vacancy.EmployerId"
                            asp-route-resumeId="@vacancy.Id" class="btn-sm btn-outline-primary">
                             Перейти к профилю работодателя
                         </a>
                     </small>
                 </div>
                 <div class="card-body">
-                    <a asp-controller="Vacancies" asp-action="Index" asp-route-resumeId="@vacancy.Id">
+                    <a asp-controller="Vacancies" asp-action="Index" asp-route-id="@vacancy.Id">
                         <h5 class="card-title">
                             @vacancy.Name
                         </h5>
@@ -63,7 +70,10 @@
                     }
                 </div>
                 <div class="card-footer text-muted p-1">
-                    Дата публикации: @vacancy.DateOfPublication.Value.Date.ToShortDateString()
+                    @if (vacancy.DateOfPublication != null)
+                    {
+                        <span>Дата публикации: @vacancy.DateOfPublication.Value.Date.ToShortDateString()</span>    
+                    }
                 </div>
             </div>
         }
@@ -79,3 +89,9 @@
         <p>Публичных вакансий пока нет</p>
     }
 </div>
+@section Scripts
+{
+    <script>
+    
+    </script>
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using HeadHunter.Enums;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HeadHunter.Models
 {
@@ -16,7 +17,8 @@ namespace HeadHunter.Models
 
         public string EmployerId { get; set; }
         public virtual User Employer { get; set; }
-
+        
+        [Remote("CheckCategory", "Validation", ErrorMessage = "Выберите категорию")]
         public string CategoryId { get; set; }
         public virtual Category Category { get; set; }
     }

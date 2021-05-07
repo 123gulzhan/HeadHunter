@@ -16,10 +16,12 @@
                 @if (@Model.Categories.Count > 0)
                 {
                     <select asp-for="CategoryId">
+                        
                         @foreach (var category in @Model.Categories)
                         {
                             <option value="@category.Id">@category.Name</option>
                         }
+                        <span asp-validation-for="CategoryId"></span><br>
                     </select>
                 }
             </div>
@@ -60,3 +62,10 @@
         </form>
     </div>
 </div>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

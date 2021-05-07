@@ -98,7 +98,6 @@ namespace HeadHunter.Controllers
                     return View(model);
                 }
             }
-
             return NotFound();
         }
 
@@ -125,7 +124,6 @@ namespace HeadHunter.Controllers
                 }
                 return NotFound();
             }
-
             return View(model);
         }
 
@@ -184,25 +182,41 @@ namespace HeadHunter.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetVacancies(string applicantId, string categoryId, string positionPart, int? page)
+        public IActionResult GetVacancies(string applicantId, string categoryId, 
+            string positionPart, string salaryOrder, int? page)
         {
             int pageSize = 2; //20 - сколько элементов будет на странице отображаться
             int pageNumber = page ?? 1;
 
-            var vacancies = _db.Vacancies.OrderByDescending(r => r.DateOfUpdate);
+            var vacancies = _db.Vacancies.Where(v => v.Status == Status.Публичное)
+                .OrderByDescending(r => r.DateOfUpdate);
 
             IEnumerable<Category> categories = _db.Categories;
 
             if (categoryId != null)
             {
-                vacancies = (IOrderedQueryable<Vacancy>)vacancies.Where(r => r.CategoryId == categoryId);
+                Category catFilter = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
+                if (catFilter != null && !catFilter.Name.Contains("Не выбрано"))
+                {
+                    vacancies = (IOrderedQueryable<Vacancy>)vacancies.Where(r => r.CategoryId == categoryId);
+                }
             }
 
             if (positionPart != null)
             {
+                positionPart = positionPart.ToLower();
                 vacancies = (IOrderedQueryable<Vacancy>)vacancies.Where(r => r.Name.Contains(positionPart));
             }
 
+            if (salaryOrder != null && salaryOrder == "asc")
+            {
+                vacancies = vacancies.OrderBy(r => r.Salary);
+            }
+            else if(salaryOrder != null && salaryOrder == "desc")
+            {
+                vacancies = vacancies.OrderByDescending(r => r.Salary);
+            }
+            
             AllVacanciesViewModel model = new AllVacanciesViewModel()
             {
                 Vacancies = vacancies.ToPagedList(pageNumber, pageSize),

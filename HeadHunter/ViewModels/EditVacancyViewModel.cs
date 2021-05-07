@@ -2,12 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 using HeadHunter.Enums;
 using HeadHunter.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HeadHunter.ViewModels
 {
     public class EditVacancyViewModel
     {
         public string Id { get; set; }
+        [Remote("CheckCategory", "Validation", ErrorMessage = "Выберите категорию")]
         public string CategoryId { get; set; }
         public virtual Category Category { get; set; }
         public string EmployerId { get; set; }

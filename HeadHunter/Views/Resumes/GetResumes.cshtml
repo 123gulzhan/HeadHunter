@@ -5,7 +5,7 @@
 @model HeadHunter.ViewModels.AllResumesViewModel
 
 @{
-    ViewBag.Title = "Публичные резюме";
+    ViewBag.Title = "Резюме соискателей";
     Layout = "_Layout";
 }
 
@@ -15,23 +15,30 @@
         <div class="form-inline form-group">
         
             <div class="m-3">
-                <label class="control-label">Категория: </label>
+                <label class="control-label">По категории: </label>
                 @if (Model.Categories.Any())
                 {
                     <select asp-for="CategoryId" id="categoryId" name="categoryId" class="form-control">
                         @foreach (var cat in Model.Categories.ToList())
                         {
-                            <option class="col-4" value="@cat.Id">@cat.Name</option>
+                            <option class="col-4" value="@cat.Id" >@cat.Name</option>
                         }
                     </select>
                 }
             </div>
             <div class="m-3">
-                <label class="control-label">Название резюме (частично):</label>
-                @Html.TextBox("positionPart", Model.Position, new {@class = "form-control"})
+                <label class="control-label">Зарплата по </label>
+                <select asp-for="SalaryOrder" id="salaryOrder" name="salaryOrder" class="form-control">
+                    <option class="col-4" value="asc" selected>возрастанию</option>
+                    <option class="col-4" value="desc">убыванию</option>
+                </select>
+            </div>
+            <div class="m-3">
+                <label class="control-label">По названию резюме </label>
+                @Html.TextBox("positionPart", Model.Position, new {@class = "form-control", @placeholder = "полностью или частично"})
             </div>
             <div class="my-auto pt-3">
-                <input type="submit" class="btn-sm btn-outline-primary" value="Фильтр">
+                <input type="submit" class="btn-sm btn-outline-primary" value="Найти по заданным параметрам">
             </div>
         </div>
     </form>
@@ -64,7 +71,10 @@
                     }
                 </div>
                 <div class="card-footer text-muted p-1">
-                    Дата публикации: @resume.DateOfPublication.Value.Date.ToShortDateString()
+                    @if (resume.DateOfPublication != null)
+                    {
+                        <span>Дата публикации: @resume.DateOfPublication.Value.Date.ToShortDateString()</span>
+                    }
                 </div>
             </div>
         }

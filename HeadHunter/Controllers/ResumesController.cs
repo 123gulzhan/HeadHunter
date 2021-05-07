@@ -174,24 +174,38 @@ namespace HeadHunter.Controllers
 
         [HttpGet]
         [Authorize(Roles = "employer")]
-        public IActionResult GetResumes(string employerId, string categoryId, string positionPart, int? page)
+        public IActionResult GetResumes(string employerId, string categoryId, string positionPart, string salaryOrder, int? page)
         {
             int pageSize = 2; //20 - сколько элементов будет на странице отображаться
             int pageNumber = page ?? 1;
 
-            var resumes = _db.Resumes.OrderByDescending(r => r.DateOfUpdate);
+            var resumes = _db.Resumes.Where(r => r.Status == Status.Публичное)
+                .OrderByDescending(r => r.DateOfUpdate);
 
             IEnumerable<Category> categories = _db.Categories;
 
             if (categoryId != null)
             {
-                resumes = (IOrderedQueryable<Resume>) resumes.Where(r => r.CategoryId == categoryId);
+                Category catFilter = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
+                if (catFilter != null && !catFilter.Name.Contains("Не выбрано"))
+                {
+                    resumes = (IOrderedQueryable<Resume>) resumes.Where(r => r.CategoryId == categoryId);
+                }
             }
-
 
             if (positionPart != null)
             {
+                positionPart = positionPart.ToLower();
                 resumes = (IOrderedQueryable<Resume>) resumes.Where(r => r.PositionName.Contains(positionPart));
+            }
+
+            if (salaryOrder != null && salaryOrder == "asc")
+            {
+                resumes = resumes.OrderBy(r => r.Salary);
+            }
+            else if(salaryOrder != null && salaryOrder == "desc")
+            {
+                resumes = resumes.OrderByDescending(r => r.Salary);
             }
 
             AllResumesViewModel model = new AllResumesViewModel
