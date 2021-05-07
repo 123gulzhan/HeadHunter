@@ -3,17 +3,15 @@ using System;
 using HeadHunter.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HeadHunter.Migrations
 {
     [DbContext(typeof(HeadHunterContext))]
-    [Migration("20210507113242_task8_Message")]
-    partial class task8_Message
+    partial class HeadHunterContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,9 +68,6 @@ namespace HeadHunter.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("MessageContent")
-                        .HasColumnType("text");
-
                     b.Property<string>("RespondId")
                         .HasColumnType("text");
 
@@ -80,6 +75,9 @@ namespace HeadHunter.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserMessage")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

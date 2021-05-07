@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HeadHunter.Migrations
 {
-    public partial class Task7_PokazVacanc : Migration
+    public partial class develop_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -301,6 +301,33 @@ namespace HeadHunter.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    UserMessage = table.Column<string>(type: "text", nullable: true),
+                    SendDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    RespondId = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_Responds_RespondId",
+                        column: x => x.RespondId,
+                        principalTable: "Responds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -342,6 +369,16 @@ namespace HeadHunter.Migrations
                 name: "IX_JobExperiences_ResumeId",
                 table: "JobExperiences",
                 column: "ResumeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_RespondId",
+                table: "Messages",
+                column: "RespondId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_UserId",
+                table: "Messages",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Qualifications_ResumeId",
@@ -400,13 +437,16 @@ namespace HeadHunter.Migrations
                 name: "JobExperiences");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "Qualifications");
 
             migrationBuilder.DropTable(
-                name: "Responds");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Responds");
 
             migrationBuilder.DropTable(
                 name: "Resumes");
